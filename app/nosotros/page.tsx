@@ -1,6 +1,7 @@
 import { Metadata } from "next";
 import SectionTitle from "@/components/SectionTitle";
-import { teamRoles, processSteps } from "@/lib/data";
+import { getSettings } from "@/lib/admin-storage";
+import Image from "next/image";
 
 export const metadata: Metadata = {
   title: "Nosotros | DomP Construcción",
@@ -8,7 +9,13 @@ export const metadata: Metadata = {
     "Conoce la historia, misión, visión y valores de DomP. Más de 15 años construyendo en México.",
 };
 
-export default function NosotrosPage() {
+export const dynamic = "force-dynamic";
+export const revalidate = 0;
+
+export default async function NosotrosPage() {
+  const settings = await getSettings();
+  const { nosotros } = settings;
+
   return (
     <div className="py-16">
       <div className="container mx-auto px-4">
@@ -17,20 +24,8 @@ export default function NosotrosPage() {
           <SectionTitle title="Nuestra Historia" />
           <div className="max-w-3xl mx-auto">
             <div className="bg-white rounded-lg shadow-md p-8">
-              <p className="text-lg text-gray-700 leading-relaxed mb-4">
-                DomP nació en 2008 con la visión de ser una empresa de
-                construcción que prioriza la calidad, el compromiso y la
-                satisfacción del cliente. Desde nuestros inicios en Chihuahua,
-                hemos crecido hasta convertirnos en una empresa reconocida por
-                la excelencia en la ejecución de proyectos residenciales,
-                comerciales e industriales.
-              </p>
-              <p className="text-lg text-gray-700 leading-relaxed">
-                A lo largo de más de 15 años, hemos completado cientos de
-                proyectos, siempre manteniendo nuestros estándares de calidad y
-                cumplimiento de tiempos. Nuestro equipo está formado por
-                profesionales altamente capacitados que comparten nuestra
-                pasión por la construcción y el servicio al cliente.
+              <p className="text-lg text-gray-700 leading-relaxed whitespace-pre-line">
+                {nosotros.historia}
               </p>
             </div>
           </div>
@@ -43,11 +38,8 @@ export default function NosotrosPage() {
               <h3 className="text-2xl font-bold text-gray-900 mb-4">
                 Misión
               </h3>
-              <p className="text-gray-700">
-                Construir proyectos de alta calidad que superen las expectativas
-                de nuestros clientes, utilizando materiales de primera y
-                cumpliendo con los más altos estándares de seguridad y
-                normatividad, siempre con profesionalismo y compromiso.
+              <p className="text-gray-700 whitespace-pre-line">
+                {nosotros.mision}
               </p>
             </div>
 
@@ -55,11 +47,8 @@ export default function NosotrosPage() {
               <h3 className="text-2xl font-bold text-gray-900 mb-4">
                 Visión
               </h3>
-              <p className="text-gray-700">
-                Ser la empresa de construcción líder en la región, reconocida por
-                nuestra excelencia, innovación y compromiso con la satisfacción
-                del cliente, contribuyendo al desarrollo urbano y al crecimiento
-                de nuestras comunidades.
+              <p className="text-gray-700 whitespace-pre-line">
+                {nosotros.vision}
               </p>
             </div>
 
@@ -68,26 +57,12 @@ export default function NosotrosPage() {
                 Valores
               </h3>
               <ul className="space-y-2 text-gray-700">
-                <li className="flex items-start">
-                  <span className="text-accent mr-2">✓</span>
-                  Calidad en cada proyecto
-                </li>
-                <li className="flex items-start">
-                  <span className="text-accent mr-2">✓</span>
-                  Integridad y transparencia
-                </li>
-                <li className="flex items-start">
-                  <span className="text-accent mr-2">✓</span>
-                  Compromiso con tiempos
-                </li>
-                <li className="flex items-start">
-                  <span className="text-accent mr-2">✓</span>
-                  Trabajo en equipo
-                </li>
-                <li className="flex items-start">
-                  <span className="text-accent mr-2">✓</span>
-                  Responsabilidad social
-                </li>
+                {nosotros.valores.map((valor, index) => (
+                  <li key={index} className="flex items-start">
+                    <span className="text-accent mr-2">✓</span>
+                    {valor}
+                  </li>
+                ))}
               </ul>
             </div>
           </div>
@@ -101,7 +76,7 @@ export default function NosotrosPage() {
           />
           <div className="max-w-4xl mx-auto">
             <div className="space-y-6">
-              {processSteps.map((step) => (
+              {nosotros.processSteps.map((step) => (
                 <div
                   key={step.step}
                   className="bg-white rounded-lg shadow-md p-6 flex gap-6"
@@ -128,17 +103,33 @@ export default function NosotrosPage() {
             subtitle="Profesionales comprometidos con la excelencia"
           />
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-            {teamRoles.map((member, index) => (
+            {nosotros.teamMembers.map((member, index) => (
               <div
                 key={index}
                 className="bg-white rounded-lg shadow-md p-6 text-center"
               >
-                <div className="w-24 h-24 bg-background-light rounded-full mx-auto mb-4 flex items-center justify-center text-4xl">
-                  👤
-                </div>
+                {member.imageUrl ? (
+                  <div className="relative w-24 h-24 mx-auto mb-4 rounded-full overflow-hidden">
+                    <Image
+                      src={member.imageUrl}
+                      alt={member.name || member.role}
+                      fill
+                      className="object-cover"
+                    />
+                  </div>
+                ) : (
+                  <div className="w-24 h-24 bg-background-light rounded-full mx-auto mb-4 flex items-center justify-center text-4xl">
+                    👤
+                  </div>
+                )}
                 <h3 className="text-xl font-bold text-gray-900 mb-2">
                   {member.role}
                 </h3>
+                {member.name && (
+                  <p className="text-lg font-semibold text-accent mb-2">
+                    {member.name}
+                  </p>
+                )}
                 <p className="text-gray-600 text-sm">{member.description}</p>
               </div>
             ))}
