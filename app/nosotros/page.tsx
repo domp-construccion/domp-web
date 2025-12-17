@@ -1,7 +1,7 @@
 import { Metadata } from "next";
 import SectionTitle from "@/components/SectionTitle";
 import { getSettings } from "@/lib/admin-storage";
-import Image from "next/image";
+import SafeImage from "@/components/SafeImage";
 
 export const metadata: Metadata = {
   title: "Nosotros | DomP Construcción",
@@ -108,20 +108,19 @@ export default async function NosotrosPage() {
                 key={index}
                 className="bg-white rounded-lg shadow-md p-6 text-center"
               >
-                {member.imageUrl ? (
-                  <div className="relative w-24 h-24 mx-auto mb-4 rounded-full overflow-hidden">
-                    <Image
-                      src={member.imageUrl}
-                      alt={member.name || member.role}
-                      fill
-                      className="object-cover"
-                    />
-                  </div>
-                ) : (
-                  <div className="w-24 h-24 bg-background-light rounded-full mx-auto mb-4 flex items-center justify-center text-4xl">
-                    👤
-                  </div>
-                )}
+                <div className="relative w-24 h-24 mx-auto mb-4 rounded-full overflow-hidden">
+                  <SafeImage
+                    src={member.imageUrl}
+                    alt={member.name || member.role}
+                    fill
+                    className="object-cover"
+                    fallback={
+                      <div className="w-24 h-24 bg-background-light rounded-full flex items-center justify-center text-4xl">
+                        👤
+                      </div>
+                    }
+                  />
+                </div>
                 <h3 className="text-xl font-bold text-gray-900 mb-2">
                   {member.role}
                 </h3>

@@ -1,8 +1,8 @@
 import { Metadata } from "next";
 import { notFound } from "next/navigation";
 import Link from "next/link";
-import Image from "next/image";
 import { getProjectBySlug } from "@/lib/admin-storage";
+import SafeImage from "@/components/SafeImage";
 
 interface ProjectDetailPageProps {
   params: Promise<{ slug: string }>;
@@ -70,20 +70,19 @@ export default async function ProjectDetailPage({
         </Link>
 
         <div className="bg-white rounded-lg shadow-lg overflow-hidden">
-          {project.imageUrl ? (
-            <div className="relative h-64 w-full">
-              <Image
-                src={project.imageUrl}
-                alt={project.name}
-                fill
-                className="object-cover"
-              />
-            </div>
-          ) : (
-            <div className="h-64 bg-primary flex items-center justify-center">
-              <span className="text-8xl">🏗️</span>
-            </div>
-          )}
+          <div className="relative h-64 w-full">
+            <SafeImage
+              src={project.imageUrl}
+              alt={project.name}
+              fill
+              className="object-cover"
+              fallback={
+                <div className="h-64 bg-primary flex items-center justify-center">
+                  <span className="text-8xl">🏗️</span>
+                </div>
+              }
+            />
+          </div>
 
           <div className="p-8">
             <div className="flex flex-wrap items-center gap-4 mb-6">

@@ -1,6 +1,6 @@
 import Link from "next/link";
-import Image from "next/image";
 import { Project } from "@/lib/admin-storage";
+import SafeImage from "./SafeImage";
 
 interface ProjectCardProps {
   project: Project;
@@ -33,20 +33,19 @@ export default function ProjectCard({
 
   const content = (
     <div className="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-xl transition-shadow">
-      {project.imageUrl ? (
-        <div className="relative h-48 w-full">
-          <Image
-            src={project.imageUrl}
-            alt={project.name}
-            fill
-            className="object-cover"
-          />
-        </div>
-      ) : (
-        <div className="h-48 bg-primary flex items-center justify-center">
-          <span className="text-6xl">🏗️</span>
-        </div>
-      )}
+      <div className="relative h-48 w-full">
+        <SafeImage
+          src={project.imageUrl}
+          alt={project.name}
+          fill
+          className="object-cover"
+          fallback={
+            <div className="h-48 bg-primary flex items-center justify-center">
+              <span className="text-6xl">🏗️</span>
+            </div>
+          }
+        />
+      </div>
       <div className="p-6">
         <div className="flex items-center justify-between mb-2">
           <span className="text-sm font-semibold text-accent uppercase">
