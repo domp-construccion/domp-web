@@ -2,6 +2,9 @@ import { NextResponse } from "next/server";
 import { cookies } from "next/headers";
 import { getSettings, saveSettings, DEFAULT_SETTINGS, type SiteSettings } from "@/lib/admin-storage";
 
+export const dynamic = 'force-dynamic';
+export const revalidate = 0;
+
 /**
  * Verifica si el usuario está autenticado como admin.
  * Reutiliza la misma lógica de autenticación que /api/admin/login.
@@ -114,12 +117,25 @@ export async function PUT(request: Request) {
       data: updatedSettings,
     });
   } catch (error) {
-    console.error("Error al actualizar settings:", error);
+    console.error("❌ Error al actualizar settings:", error);
+    const errorMessage = error instanceof Error ? error.message : String(error);
+    console.error("❌ Detalles del error:", errorMessage);
+    
+    // Si es un error de MongoDB, dar un mensaje más específico
+    if (errorMessage.includes("MONGODB_URI") || errorMessage.includes("conectar") || errorMessage.includes("ENOTFOUND")) {
+      return NextResponse.json(
+        {
+          ok: false,
+          message: "Error de conexión a la base de datos. Verifica que MongoDB esté configurado correctamente en las variables de entorno.",
+        },
+        { status: 500 },
+      );
+    }
+    
     return NextResponse.json(
       {
         ok: false,
-        message:
-          "Ocurrió un error al actualizar la configuración. Intenta nuevamente más tarde.",
+        message: `Error al actualizar la configuración: ${errorMessage}. Intenta nuevamente más tarde.`,
       },
       { status: 500 },
     );

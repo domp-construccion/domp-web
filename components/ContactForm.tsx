@@ -84,13 +84,20 @@ export default function ContactForm() {
           data && "message" in data && data.message
             ? data.message
             : "Error al enviar la solicitud. Intenta nuevamente.";
-        console.error("Error en respuesta de /api/cotizaciones:", errorMessage);
+        console.error("❌ Error en respuesta de /api/cotizaciones:", errorMessage);
+        console.error("❌ Respuesta completa:", data);
         setSubmitStatus("error");
         setErrorMessage(errorMessage);
         return;
       }
 
+      const successMessage = data && "message" in data && data.message 
+        ? data.message 
+        : "Mensaje enviado. Te contactaremos pronto.";
+      
+      console.log("✅ Cotización enviada exitosamente:", successMessage);
       setSubmitStatus("success");
+      setErrorMessage(null);
       setFormData({
         nombre: "",
         email: "",
@@ -133,10 +140,7 @@ export default function ContactForm() {
       {submitStatus === "success" && (
         <div className="bg-green-50 border border-green-200 text-green-800 rounded-lg p-4 mb-6">
           <p className="font-semibold">
-            Solicitud enviada. Nos pondremos en contacto contigo.
-          </p>
-          <p className="text-sm mt-1">
-            Revisa tu correo para confirmar los datos que nos compartiste.
+            Mensaje enviado. Te contactaremos pronto.
           </p>
         </div>
       )}

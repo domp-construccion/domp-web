@@ -6,6 +6,9 @@ import {
   type Project,
 } from "@/lib/admin-storage";
 
+export const dynamic = 'force-dynamic';
+export const revalidate = 0;
+
 async function isAdminAuthenticated() {
   const cookieStore = await cookies();
   const session = cookieStore.get("admin_session");
@@ -94,11 +97,24 @@ export async function POST(request: Request) {
       data: newProject,
     });
   } catch (error) {
-    console.error("Error al crear proyecto:", error);
+    console.error("❌ Error al crear proyecto:", error);
+    const errorMessage = error instanceof Error ? error.message : String(error);
+    console.error("❌ Detalles del error:", errorMessage);
+    
+    if (errorMessage.includes("MONGODB_URI") || errorMessage.includes("conectar") || errorMessage.includes("ENOTFOUND")) {
+      return NextResponse.json(
+        {
+          ok: false,
+          message: "Error de conexión a la base de datos. Verifica que MongoDB esté configurado correctamente.",
+        },
+        { status: 500 },
+      );
+    }
+    
     return NextResponse.json(
       {
         ok: false,
-        message: "Error al crear el proyecto",
+        message: `Error al crear el proyecto: ${errorMessage}`,
       },
       { status: 500 },
     );
@@ -172,11 +188,24 @@ export async function PUT(request: Request) {
       data: projects[index],
     });
   } catch (error) {
-    console.error("Error al actualizar proyecto:", error);
+    console.error("❌ Error al actualizar proyecto:", error);
+    const errorMessage = error instanceof Error ? error.message : String(error);
+    console.error("❌ Detalles del error:", errorMessage);
+    
+    if (errorMessage.includes("MONGODB_URI") || errorMessage.includes("conectar") || errorMessage.includes("ENOTFOUND")) {
+      return NextResponse.json(
+        {
+          ok: false,
+          message: "Error de conexión a la base de datos. Verifica que MongoDB esté configurado correctamente.",
+        },
+        { status: 500 },
+      );
+    }
+    
     return NextResponse.json(
       {
         ok: false,
-        message: "Error al actualizar el proyecto",
+        message: `Error al actualizar el proyecto: ${errorMessage}`,
       },
       { status: 500 },
     );
@@ -219,11 +248,24 @@ export async function DELETE(request: Request) {
       message: "Proyecto eliminado correctamente",
     });
   } catch (error) {
-    console.error("Error al eliminar proyecto:", error);
+    console.error("❌ Error al eliminar proyecto:", error);
+    const errorMessage = error instanceof Error ? error.message : String(error);
+    console.error("❌ Detalles del error:", errorMessage);
+    
+    if (errorMessage.includes("MONGODB_URI") || errorMessage.includes("conectar") || errorMessage.includes("ENOTFOUND")) {
+      return NextResponse.json(
+        {
+          ok: false,
+          message: "Error de conexión a la base de datos. Verifica que MongoDB esté configurado correctamente.",
+        },
+        { status: 500 },
+      );
+    }
+    
     return NextResponse.json(
       {
         ok: false,
-        message: "Error al eliminar el proyecto",
+        message: `Error al eliminar el proyecto: ${errorMessage}`,
       },
       { status: 500 },
     );

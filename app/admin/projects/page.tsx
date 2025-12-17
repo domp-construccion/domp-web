@@ -111,12 +111,17 @@ export default function AdminProjectsPage() {
           year: undefined,
           imageUrl: "",
         });
+        setError(null);
         loadProjects();
       } else {
-        setError(result.message || "Error al guardar proyecto");
+        const errorMsg = result.message || "Error al guardar proyecto";
+        console.error("❌ Error al guardar proyecto:", errorMsg);
+        setError(errorMsg);
       }
     } catch (err) {
-      setError("Error al guardar proyecto");
+      const errorMessage = err instanceof Error ? err.message : String(err);
+      console.error("❌ Error al guardar proyecto:", errorMessage);
+      setError(`Error de conexión: ${errorMessage}. Verifica tu conexión a internet e intenta nuevamente.`);
     } finally {
       setSaving(false);
     }
@@ -147,12 +152,17 @@ export default function AdminProjectsPage() {
       const result = await response.json();
 
       if (result.ok) {
+        setError(null);
         loadProjects();
       } else {
-        setError(result.message || "Error al eliminar proyecto");
+        const errorMsg = result.message || "Error al eliminar proyecto";
+        console.error("❌ Error al eliminar proyecto:", errorMsg);
+        setError(errorMsg);
       }
     } catch (err) {
-      setError("Error al eliminar proyecto");
+      const errorMessage = err instanceof Error ? err.message : String(err);
+      console.error("❌ Error al eliminar proyecto:", errorMessage);
+      setError(`Error de conexión: ${errorMessage}. Verifica tu conexión a internet e intenta nuevamente.`);
     }
   };
 

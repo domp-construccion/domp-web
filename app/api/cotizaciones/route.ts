@@ -3,6 +3,9 @@ import { Resend } from "resend";
 import { getDb } from "@/lib/mongodb";
 import { cookies } from "next/headers";
 
+export const dynamic = 'force-dynamic';
+export const revalidate = 0;
+
 type QuotePayload = {
   nombre: string;
   email: string;
@@ -103,9 +106,15 @@ export async function POST(request: Request) {
 
     // Enviar correo usando Resend
     let emailSent = false;
+    let emailError: string | null = null;
     const resendApiKey = process.env.RESEND_API_KEY;
     const toEmail = process.env.QUOTES_TO_EMAIL || "constructora.domp@outlook.com";
     const fromEmail = process.env.QUOTES_FROM_EMAIL || "onboarding@resend.dev";
+
+    console.log("📧 Intentando enviar correo...");
+    console.log("📧 RESEND_API_KEY configurado:", !!resendApiKey);
+    console.log("📧 To email:", toEmail);
+    console.log("📧 From email:", fromEmail);
 
     if (resendApiKey) {
       try {
@@ -130,67 +139,63 @@ export async function POST(request: Request) {
           "Este correo fue generado automáticamente desde el formulario de contacto de DomP.",
         ].join("\n");
 
-        const { error } = await resend.emails.send({
+        const htmlBody = `
+          <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
+            <h2 style="color: #101932;">Nueva solicitud de cotización</h2>
+            <p>Has recibido una nueva solicitud de cotización desde el sitio web de DomP.</p>
+            <div style="background: #f5f5f5; padding: 20px; border-radius: 8px; margin: 20px 0;">
+              <p><strong>Nombre:</strong> ${nombre}</p>
+              <p><strong>Email:</strong> ${email}</p>
+              <p><strong>Teléfono:</strong> ${telefono}</p>
+              <p><strong>Tipo de proyecto:</strong> ${tipoProyecto}</p>
+              <p><strong>Presupuesto estimado:</strong> ${presupuestoEstimado || "No especificado"}</p>
+            </div>
+            <div style="margin: 20px 0;">
+              <h3>Mensaje:</h3>
+              <p style="white-space: pre-wrap;">${mensaje}</p>
+            </div>
+            <hr style="border: none; border-top: 1px solid #ddd; margin: 20px 0;">
+            <p style="color: #666; font-size: 12px;">Este correo fue generado automáticamente desde el formulario de contacto de DomP.</p>
+          </div>
+        `;
+
+        const result = await resend.emails.send({
           from: fromEmail,
           to: toEmail,
           subject,
           text: textBody,
+          html: htmlBody,
         });
 
-        if (!error) {
-          emailSent = true;
+        console.log("📧 Resultado de Resend:", JSON.stringify(result, null, 2));
+
+        if (result.error) {
+          console.error("❌ Error al enviar correo de cotización:", result.error);
+          emailError = result.error.message || "Error desconocido al enviar correo";
         } else {
-          console.error("Error al enviar correo de cotización:", error);
+          emailSent = true;
+          console.log("✅ Correo enviado exitosamente");
         }
       } catch (emailError) {
-        console.error("Error al intentar enviar correo:", emailError);
+        const errorMessage = emailError instanceof Error ? emailError.message : String(emailError);
+        console.error("❌ Error al intentar enviar correo:", errorMessage);
+        emailError = errorMessage;
       }
     } else {
-      console.warn(
-        "RESEND_API_KEY no está configurado. El correo no se enviará, pero la cotización se guardará en la base de datos.",
-      );
+      console.warn("⚠️ RESEND_API_KEY no está configurado. El correo no se enviará.");
+      emailError = "RESEND_API_KEY no está configurado en las variables de entorno";
     }
 
-    // Guardar en MongoDB (requerido)
-    let saved = false;
-    let insertedId: string | undefined;
-
-    if (!process.env.MONGODB_URI) {
+    // NOTA: Según las instrucciones del usuario, las cotizaciones NO se guardan en MongoDB,
+    // solo se envían por correo. Sin embargo, el código original intentaba guardar.
+    // Por ahora, solo enviamos el correo y respondemos con éxito si el correo se envió.
+    
+    // Si el correo no se pudo enviar, devolver un error
+    if (!emailSent) {
       return NextResponse.json(
         {
           ok: false,
-          message:
-            "La base de datos no está configurada. No es posible guardar la cotización.",
-        },
-        { status: 500 },
-      );
-    }
-
-    try {
-      const db = await getDb();
-      const result = await db.collection("cotizaciones").insertOne({
-        nombre,
-        email,
-        telefono,
-        tipoProyecto,
-        presupuestoEstimado: presupuestoEstimado ?? null,
-        mensaje,
-        status: "nuevo",
-        origen: "web",
-        createdAt: new Date(),
-      });
-
-      saved = true;
-      insertedId = String(result.insertedId);
-    } catch (dbError) {
-      console.error("Error al guardar cotización en MongoDB:", dbError);
-      const errorMessage =
-        dbError instanceof Error ? dbError.message : "Error desconocido";
-      console.error("Detalles del error:", errorMessage);
-      return NextResponse.json(
-        {
-          ok: false,
-          message: `Error al guardar la cotización: ${errorMessage}. Verifica la conexión a la base de datos.`,
+          message: `No se pudo enviar la cotización por correo. ${emailError || "Error desconocido"}. Verifica que RESEND_API_KEY, QUOTES_TO_EMAIL y QUOTES_FROM_EMAIL estén configurados correctamente en las variables de entorno.`,
         },
         { status: 500 },
       );
@@ -199,12 +204,8 @@ export async function POST(request: Request) {
     return NextResponse.json(
       {
         ok: true,
-        message: emailSent
-          ? "Cotización enviada y guardada correctamente"
-          : "Cotización guardada correctamente (el correo no pudo enviarse)",
-        saved,
-        emailSent,
-        id: insertedId,
+        message: "Cotización enviada correctamente. Te contactaremos pronto.",
+        emailSent: true,
       },
       { status: 201 },
     );

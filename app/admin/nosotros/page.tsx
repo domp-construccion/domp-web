@@ -79,12 +79,17 @@ export default function AdminNosotrosPage() {
 
       if (result.ok) {
         setSuccess(true);
+        setError(null);
         setTimeout(() => setSuccess(false), 3000);
       } else {
-        setError(result.message || "Error al guardar");
+        const errorMsg = result.message || "Error al guardar";
+        console.error("❌ Error al guardar:", errorMsg);
+        setError(errorMsg);
       }
     } catch (err) {
-      setError("Error al guardar");
+      const errorMessage = err instanceof Error ? err.message : String(err);
+      console.error("❌ Error al guardar:", errorMessage);
+      setError(`Error de conexión: ${errorMessage}. Verifica tu conexión a internet e intenta nuevamente.`);
     } finally {
       setSaving(false);
     }

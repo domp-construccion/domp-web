@@ -195,17 +195,21 @@ export default function AdminSettingsPage() {
         setSaveSuccess(true);
         setSettings(result.data);
         setFormData(result.data);
+        setSaveError(null);
         setTimeout(() => setSaveSuccess(false), 3000);
         // Forzar recarga de la página después de guardar para ver los cambios
         setTimeout(() => {
           window.location.reload();
         }, 2000);
       } else {
-        setSaveError(result.message || "Error al guardar");
+        const errorMsg = result.message || "Error al guardar";
+        console.error("❌ Error al guardar:", errorMsg);
+        setSaveError(errorMsg);
       }
     } catch (error) {
-      console.error("Error al guardar:", error);
-      setSaveError("Error al guardar la configuración");
+      const errorMessage = error instanceof Error ? error.message : String(error);
+      console.error("❌ Error al guardar:", errorMessage);
+      setSaveError(`Error de conexión: ${errorMessage}. Verifica tu conexión a internet e intenta nuevamente.`);
     } finally {
       setSaving(false);
     }

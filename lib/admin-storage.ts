@@ -177,6 +177,7 @@ export async function getSettings(): Promise<SiteSettings> {
 
 export async function saveSettings(settings: SiteSettings): Promise<void> {
   try {
+    console.log("💾 Iniciando guardado de settings en MongoDB...");
     const db = await getDb();
     const collection = db.collection("settings");
     
@@ -198,14 +199,18 @@ export async function saveSettings(settings: SiteSettings): Promise<void> {
     const verify = await collection.findOne({ _id: "site" });
     if (verify) {
       console.log("✅ Verificación: Settings guardados correctamente. Emails:", verify.emails);
+    } else {
+      console.warn("⚠️ Advertencia: No se pudo verificar el guardado de settings");
     }
   } catch (error) {
     const errorMessage = error instanceof Error ? error.message : String(error);
     console.error("❌ Error al guardar settings en MongoDB:", errorMessage);
+    console.error("❌ Stack trace:", error instanceof Error ? error.stack : "No disponible");
     
-    if (errorMessage.includes("MONGODB_URI") || errorMessage.includes("conectar") || errorMessage.includes("ENOTFOUND")) {
-      console.warn("⚠️ MongoDB no disponible. Los cambios no se guardarán permanentemente.");
-      return;
+    if (errorMessage.includes("MONGODB_URI") || errorMessage.includes("conectar") || errorMessage.includes("ENOTFOUND") || errorMessage.includes("querySrv")) {
+      const detailedError = `MongoDB no está disponible. Verifica: 1) Que MONGODB_URI esté configurado en las variables de entorno, 2) Que el cluster de MongoDB Atlas esté activo (no pausado), 3) Que tu IP esté en la whitelist de MongoDB Atlas (o usa 0.0.0.0/0 para desarrollo), 4) Tu conexión a internet. Error: ${errorMessage}`;
+      console.warn("⚠️", detailedError);
+      throw new Error(detailedError);
     }
     
     throw error;
@@ -248,6 +253,7 @@ export async function getProjects(): Promise<Project[]> {
 
 export async function saveProjects(projects: Project[]): Promise<void> {
   try {
+    console.log(`💾 Iniciando guardado de ${projects.length} proyecto(s) en MongoDB...`);
     const db = await getDb();
     const collection = db.collection("projects");
     
@@ -259,19 +265,24 @@ export async function saveProjects(projects: Project[]): Promise<void> {
       };
     });
     
-    await collection.deleteMany({});
+    console.log("💾 Eliminando proyectos existentes...");
+    const deleteResult = await collection.deleteMany({});
+    console.log(`💾 Proyectos eliminados: ${deleteResult.deletedCount}`);
     
     if (mongoProjects.length > 0) {
+      console.log("💾 Insertando nuevos proyectos...");
       await collection.insertMany(mongoProjects);
     }
     console.log(`✅ ${projects.length} proyecto(s) guardado(s) en MongoDB correctamente`);
   } catch (error) {
     const errorMessage = error instanceof Error ? error.message : String(error);
     console.error("❌ Error al guardar proyectos en MongoDB:", errorMessage);
+    console.error("❌ Stack trace:", error instanceof Error ? error.stack : "No disponible");
     
-    if (errorMessage.includes("MONGODB_URI") || errorMessage.includes("conectar") || errorMessage.includes("ENOTFOUND")) {
-      console.warn("⚠️ MongoDB no disponible. Los cambios no se guardarán permanentemente.");
-      return;
+    if (errorMessage.includes("MONGODB_URI") || errorMessage.includes("conectar") || errorMessage.includes("ENOTFOUND") || errorMessage.includes("querySrv")) {
+      const detailedError = `MongoDB no está disponible. Verifica: 1) Que MONGODB_URI esté configurado en las variables de entorno, 2) Que el cluster de MongoDB Atlas esté activo (no pausado), 3) Que tu IP esté en la whitelist de MongoDB Atlas (o usa 0.0.0.0/0 para desarrollo), 4) Tu conexión a internet. Error: ${errorMessage}`;
+      console.warn("⚠️", detailedError);
+      throw new Error(detailedError);
     }
     
     throw error;
