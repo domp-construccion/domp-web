@@ -1,6 +1,7 @@
 import Link from "next/link";
 import Image from "next/image";
 import { getSettings } from "@/lib/admin-storage";
+import SocialButtons from "@/components/SocialButtons";
 
 export const dynamic = "force-dynamic";
 export const revalidate = 0;
@@ -156,6 +157,10 @@ export default async function Footer() {
                   <p>{serviceAreas}</p>
                 </>
               )}
+            </div>
+            <div className="mt-6">
+              <h4 className="text-lg font-semibold mb-4">Síguenos</h4>
+              <SocialButtons />
             </div>
           </div>
         </div>

@@ -56,13 +56,13 @@ export type SiteSettings = {
 const DEFAULT_SETTINGS: SiteSettings = {
   phones: ["614 2156600"],
   emails: ["domp@contruccion.mx"],
-  whatsapp: "",
+  whatsapp: "6142156600",
   address: "",
   city: "Chihuahua, Chihuahua",
   serviceAreas: ["Chihuahua y alrededores"],
   social: {
-    instagram: "",
-    facebook: "",
+    instagram: "https://www.instagram.com/domp.mx?igsh=b2xhM3JkdXg3N2p4",
+    facebook: "https://www.facebook.com/share/16rTmPc5Zm/?mibextid=wwXIfr",
     tiktok: "",
     linkedin: "",
   },
