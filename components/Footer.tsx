@@ -96,10 +96,10 @@ export default async function Footer() {
               </li>
               <li>
                 <Link
-                  href="/servicios"
+                  href="/especialidades"
                   className="text-gray-400 hover:text-accent transition-colors"
                 >
-                  Servicios
+                  Especialidades
                 </Link>
               </li>
               <li>

@@ -1,14 +1,19 @@
 import SectionTitle from "./SectionTitle";
 import ServiceCard from "./ServiceCard";
-import { services } from "@/lib/data";
+import { getServices } from "@/lib/admin-storage";
 import Link from "next/link";
 
-export default function ServicesSection() {
+export const dynamic = "force-dynamic";
+export const revalidate = 0;
+
+export default async function ServicesSection() {
+  const services = await getServices();
+
   return (
     <section className="py-16 bg-background-light">
       <div className="container mx-auto px-4">
         <SectionTitle
-          title="Nuestros Servicios"
+          title="Nuestras Especialidades"
           subtitle="Soluciones integrales en construcción para todos tus proyectos"
         />
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
@@ -18,10 +23,10 @@ export default function ServicesSection() {
         </div>
         <div className="text-center">
           <Link
-            href="/servicios"
+            href="/especialidades"
             className="inline-block bg-accent text-white px-8 py-3 rounded-lg font-semibold hover:bg-accent-hover transition-colors"
           >
-            Ver Todos los Servicios
+            Ver Todas las Especialidades
           </Link>
         </div>
       </div>

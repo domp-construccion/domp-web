@@ -5,6 +5,9 @@ export interface Service {
   benefits: string[];
   idealClient: string;
   icon: string;
+  imageUrl?: string;
+  detailedDescription?: string;
+  category?: string;
 }
 
 export interface Project {

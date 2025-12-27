@@ -90,6 +90,15 @@ export default function AdminPage() {
               </p>
             </Link>
             <Link
+              href="/admin/services"
+              className="bg-blue-600 text-white p-6 rounded-lg hover:bg-blue-700 transition-colors"
+            >
+              <h2 className="text-xl font-semibold mb-2">Especialidades</h2>
+              <p className="text-gray-200">
+                Agregar, editar y eliminar especialidades
+              </p>
+            </Link>
+            <Link
               href="/admin/cotizaciones"
               className="bg-gray-700 text-white p-6 rounded-lg hover:bg-gray-800 transition-colors"
             >

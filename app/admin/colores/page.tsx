@@ -339,6 +339,110 @@ export default function AdminColoresPage() {
                   <span className="text-white text-sm">Texto de ejemplo</span>
                 </div>
               </div>
+
+              {/* Social Buttons Color */}
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-2">
+                  Color Botones Redes Sociales
+                </label>
+                <div className="flex gap-2">
+                  <input
+                    type="color"
+                    value={settings.colors.socialButtons || settings.colors.accent}
+                    onChange={(e) =>
+                      setSettings({
+                        ...settings,
+                        colors: {
+                          ...settings.colors,
+                          socialButtons: e.target.value,
+                        },
+                      })
+                    }
+                    className="w-16 h-10 rounded border border-gray-300"
+                  />
+                  <input
+                    type="text"
+                    value={settings.colors.socialButtons || settings.colors.accent}
+                    onChange={(e) =>
+                      setSettings({
+                        ...settings,
+                        colors: {
+                          ...settings.colors,
+                          socialButtons: e.target.value,
+                        },
+                      })
+                    }
+                    className="flex-1 px-4 py-2 border border-gray-300 rounded-lg"
+                    placeholder="#F18121"
+                  />
+                </div>
+                <div className="mt-2 flex gap-2">
+                  <div
+                    className="h-12 w-12 rounded-full flex items-center justify-center"
+                    style={{ backgroundColor: settings.colors.socialButtons || settings.colors.accent }}
+                  >
+                    <span className="text-white text-xs">W</span>
+                  </div>
+                  <div
+                    className="h-12 w-12 rounded-full flex items-center justify-center"
+                    style={{ backgroundColor: settings.colors.socialButtons || settings.colors.accent }}
+                  >
+                    <span className="text-white text-xs">I</span>
+                  </div>
+                  <div
+                    className="h-12 w-12 rounded-full flex items-center justify-center"
+                    style={{ backgroundColor: settings.colors.socialButtons || settings.colors.accent }}
+                  >
+                    <span className="text-white text-xs">F</span>
+                  </div>
+                </div>
+              </div>
+
+              {/* Social Buttons Hover Color */}
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-2">
+                  Color Hover Botones Redes Sociales
+                </label>
+                <div className="flex gap-2">
+                  <input
+                    type="color"
+                    value={settings.colors.socialButtonsHover || settings.colors.accentHover}
+                    onChange={(e) =>
+                      setSettings({
+                        ...settings,
+                        colors: {
+                          ...settings.colors,
+                          socialButtonsHover: e.target.value,
+                        },
+                      })
+                    }
+                    className="w-16 h-10 rounded border border-gray-300"
+                  />
+                  <input
+                    type="text"
+                    value={settings.colors.socialButtonsHover || settings.colors.accentHover}
+                    onChange={(e) =>
+                      setSettings({
+                        ...settings,
+                        colors: {
+                          ...settings.colors,
+                          socialButtonsHover: e.target.value,
+                        },
+                      })
+                    }
+                    className="flex-1 px-4 py-2 border border-gray-300 rounded-lg"
+                    placeholder="#e0771a"
+                  />
+                </div>
+                <div className="mt-2 flex gap-2">
+                  <div
+                    className="h-12 w-12 rounded-full flex items-center justify-center opacity-75"
+                    style={{ backgroundColor: settings.colors.socialButtonsHover || settings.colors.accentHover }}
+                  >
+                    <span className="text-white text-xs">Hover</span>
+                  </div>
+                </div>
+              </div>
             </div>
 
             <div className="pt-6 border-t border-gray-200">

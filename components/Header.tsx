@@ -9,7 +9,7 @@ export default function Header() {
 
   const navLinks = [
     { href: "/", label: "Inicio" },
-    { href: "/servicios", label: "Servicios" },
+    { href: "/especialidades", label: "Especialidades" },
     { href: "/proyectos", label: "Proyectos" },
     { href: "/nosotros", label: "Nosotros" },
     { href: "/contacto", label: "Contacto" },

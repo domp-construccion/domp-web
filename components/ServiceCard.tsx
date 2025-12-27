@@ -1,4 +1,5 @@
 import { Service } from "@/lib/data";
+import Link from "next/link";
 
 interface ServiceCardProps {
   service: Service;
@@ -6,7 +7,10 @@ interface ServiceCardProps {
 
 export default function ServiceCard({ service }: ServiceCardProps) {
   return (
-    <div className="bg-white rounded-lg shadow-md p-6 hover:shadow-xl transition-shadow">
+    <Link
+      href={`/especialidades/${service.id}`}
+      className="block bg-white rounded-lg shadow-md p-6 hover:shadow-xl transition-all transform hover:-translate-y-1"
+    >
       <div className="text-4xl mb-4">{service.icon}</div>
       <h3 className="text-xl font-bold text-gray-900 mb-3">{service.title}</h3>
       <p className="text-gray-600 mb-4">{service.description}</p>
@@ -21,7 +25,7 @@ export default function ServiceCard({ service }: ServiceCardProps) {
       <p className="text-sm text-gray-500 italic">
         Ideal para: {service.idealClient}
       </p>
-    </div>
+    </Link>
   );
 }
 

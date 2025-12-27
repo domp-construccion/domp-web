@@ -50,6 +50,8 @@ export type SiteSettings = {
     accentHover: string;
     backgroundLight: string;
     textDark: string;
+    socialButtons?: string;
+    socialButtonsHover?: string;
   };
 };
 
@@ -146,6 +148,8 @@ const DEFAULT_SETTINGS: SiteSettings = {
     accentHover: "#e0771a",
     backgroundLight: "#EDEDED",
     textDark: "#171719",
+    socialButtons: "#F18121",
+    socialButtonsHover: "#e0771a",
   },
 };
 
@@ -306,6 +310,91 @@ export async function getPublishedProjects(): Promise<Project[]> {
   } catch (error) {
     console.error("Error al obtener proyectos publicados:", error);
     return [];
+  }
+}
+
+// Services (Especialidades)
+export type Service = {
+  id: string;
+  title: string;
+  description: string;
+  detailedDescription?: string;
+  benefits: string[];
+  idealClient: string;
+  icon: string;
+  imageUrl?: string;
+  category?: string;
+};
+
+export async function getServices(): Promise<Service[]> {
+  try {
+    const db = await getDb();
+    const collection = db.collection("services");
+    
+    const services = await collection.find({}).toArray();
+    
+    return services.map((s: any) => {
+      const { _id, ...serviceData } = s;
+      return {
+        ...serviceData,
+        id: _id.toString(),
+        category: serviceData.category || undefined,
+      } as Service;
+    });
+  } catch (error) {
+    const errorMessage = error instanceof Error ? error.message : String(error);
+    console.warn("⚠️ MongoDB no disponible, usando servicios por defecto:", errorMessage);
+    // Retornar servicios por defecto desde default-services.ts
+    const { defaultServices } = await import("@/lib/default-services");
+    return defaultServices;
+  }
+}
+
+export async function saveServices(services: Service[]): Promise<void> {
+  try {
+    console.log(`💾 Iniciando guardado de ${services.length} servicio(s) en MongoDB...`);
+    const db = await getDb();
+    const collection = db.collection("services");
+    
+    const mongoServices = services.map((s: Service) => {
+      const { id, ...serviceData } = s;
+      return {
+        _id: id,
+        ...serviceData,
+      };
+    });
+    
+    console.log("💾 Eliminando servicios existentes...");
+    const deleteResult = await collection.deleteMany({});
+    console.log(`💾 Servicios eliminados: ${deleteResult.deletedCount}`);
+    
+    if (mongoServices.length > 0) {
+      console.log("💾 Insertando nuevos servicios...");
+      await collection.insertMany(mongoServices);
+    }
+    console.log(`✅ ${services.length} servicio(s) guardado(s) en MongoDB correctamente`);
+  } catch (error) {
+    const errorMessage = error instanceof Error ? error.message : String(error);
+    console.error("❌ Error al guardar servicios en MongoDB:", errorMessage);
+    console.error("❌ Stack trace:", error instanceof Error ? error.stack : "No disponible");
+    
+    if (errorMessage.includes("MONGODB_URI") || errorMessage.includes("conectar") || errorMessage.includes("ENOTFOUND") || errorMessage.includes("querySrv")) {
+      const detailedError = `MongoDB no está disponible. Verifica: 1) Que MONGODB_URI esté configurado en las variables de entorno, 2) Que el cluster de MongoDB Atlas esté activo (no pausado), 3) Que tu IP esté en la whitelist de MongoDB Atlas (o usa 0.0.0.0/0 para desarrollo), 4) Tu conexión a internet. Error: ${errorMessage}`;
+      console.warn("⚠️", detailedError);
+      throw new Error(detailedError);
+    }
+    
+    throw error;
+  }
+}
+
+export async function getServiceById(id: string): Promise<Service | null> {
+  try {
+    const services = await getServices();
+    return services.find((s) => s.id === id) || null;
+  } catch (error) {
+    console.error("Error al obtener servicio por id:", error);
+    return null;
   }
 }
 

@@ -47,6 +47,8 @@ type SiteSettings = {
     accentHover: string;
     backgroundLight: string;
     textDark: string;
+    socialButtons?: string;
+    socialButtonsHover?: string;
   };
 };
 

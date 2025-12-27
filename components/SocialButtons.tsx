@@ -28,6 +28,10 @@ export default async function SocialButtons() {
     return null;
   }
 
+  // Colores de los botones (usar colores del tema o valores por defecto)
+  const buttonColor = settings.colors?.socialButtons || settings.colors?.accent || "#F18121";
+  const buttonHoverColor = settings.colors?.socialButtonsHover || settings.colors?.accentHover || "#e0771a";
+
   return (
     <div className="flex items-center gap-4">
       {whatsapp && (
@@ -35,7 +39,16 @@ export default async function SocialButtons() {
           href={`https://wa.me/${whatsapp.replace(/\s/g, "").replace(/\+/g, "")}`}
           target="_blank"
           rel="noopener noreferrer"
-          className="flex items-center justify-center w-10 h-10 rounded-full bg-[#25D366] hover:bg-[#20BA5A] transition-colors text-white"
+          className="flex items-center justify-center w-10 h-10 rounded-full text-white transition-colors"
+          style={{
+            backgroundColor: buttonColor,
+          }}
+          onMouseEnter={(e) => {
+            e.currentTarget.style.backgroundColor = buttonHoverColor;
+          }}
+          onMouseLeave={(e) => {
+            e.currentTarget.style.backgroundColor = buttonColor;
+          }}
           aria-label="WhatsApp"
         >
           <svg
@@ -53,7 +66,16 @@ export default async function SocialButtons() {
           href={instagram}
           target="_blank"
           rel="noopener noreferrer"
-          className="flex items-center justify-center w-10 h-10 rounded-full bg-gradient-to-br from-purple-600 via-pink-600 to-orange-500 hover:from-purple-700 hover:via-pink-700 hover:to-orange-600 transition-all text-white"
+          className="flex items-center justify-center w-10 h-10 rounded-full text-white transition-colors"
+          style={{
+            backgroundColor: buttonColor,
+          }}
+          onMouseEnter={(e) => {
+            e.currentTarget.style.backgroundColor = buttonHoverColor;
+          }}
+          onMouseLeave={(e) => {
+            e.currentTarget.style.backgroundColor = buttonColor;
+          }}
           aria-label="Instagram"
         >
           <svg
@@ -71,7 +93,16 @@ export default async function SocialButtons() {
           href={facebook}
           target="_blank"
           rel="noopener noreferrer"
-          className="flex items-center justify-center w-10 h-10 rounded-full bg-[#1877F2] hover:bg-[#166FE5] transition-colors text-white"
+          className="flex items-center justify-center w-10 h-10 rounded-full text-white transition-colors"
+          style={{
+            backgroundColor: buttonColor,
+          }}
+          onMouseEnter={(e) => {
+            e.currentTarget.style.backgroundColor = buttonHoverColor;
+          }}
+          onMouseLeave={(e) => {
+            e.currentTarget.style.backgroundColor = buttonColor;
+          }}
           aria-label="Facebook"
         >
           <svg
