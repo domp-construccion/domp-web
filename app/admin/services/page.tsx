@@ -423,7 +423,6 @@ export default function AdminServicesPage() {
                 <div className="p-4">
                   <div className="flex items-start justify-between mb-2">
                     <div className="flex items-center gap-2">
-                      {service.icon && <span className="text-2xl">{service.icon}</span>}
                       <h3 className="font-bold text-gray-900">{service.title}</h3>
                     </div>
                   </div>

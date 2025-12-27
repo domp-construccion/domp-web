@@ -15,7 +15,6 @@ export const defaultServices: Service[] = [
       "Supervisión profesional"
     ],
     idealClient: "Familias y desarrolladores inmobiliarios",
-    icon: "🏠",
     category: "Construcción"
   },
   {
@@ -30,7 +29,6 @@ export const defaultServices: Service[] = [
       "Planeación estratégica"
     ],
     idealClient: "Empresarios y comerciantes",
-    icon: "🏢",
     category: "Construcción"
   },
   {
@@ -45,7 +43,6 @@ export const defaultServices: Service[] = [
       "Mejora de valor inmobiliario"
     ],
     idealClient: "Propietarios que buscan ampliar su espacio",
-    icon: "📐",
     category: "Construcción"
   },
   {
@@ -60,7 +57,6 @@ export const defaultServices: Service[] = [
       "Supervisión técnica"
     ],
     idealClient: "Desarrolladores y propietarios",
-    icon: "🧱",
     category: "Construcción"
   },
   
@@ -77,7 +73,6 @@ export const defaultServices: Service[] = [
       "Valor agregado a la propiedad"
     ],
     idealClient: "Propietarios que buscan renovar completamente",
-    icon: "🔄",
     category: "Remodelación"
   },
   {
@@ -92,7 +87,6 @@ export const defaultServices: Service[] = [
       "Instalaciones actualizadas"
     ],
     idealClient: "Propietarios que buscan modernizar cocinas y baños",
-    icon: "🚿",
     category: "Remodelación"
   },
   {
@@ -107,7 +101,6 @@ export const defaultServices: Service[] = [
       "Sin necesidad de ampliar"
     ],
     idealClient: "Propietarios que buscan optimizar su espacio",
-    icon: "📏",
     category: "Remodelación"
   },
   {
@@ -122,7 +115,6 @@ export const defaultServices: Service[] = [
       "Propiedad lista para venta/renta"
     ],
     idealClient: "Propietarios que buscan vender o rentar",
-    icon: "💰",
     category: "Remodelación"
   },
   {
@@ -137,7 +129,6 @@ export const defaultServices: Service[] = [
       "Imagen renovada"
     ],
     idealClient: "Propietarios que buscan mejorar la apariencia exterior",
-    icon: "🏛️",
     category: "Remodelación"
   },
   
@@ -154,7 +145,6 @@ export const defaultServices: Service[] = [
       "Durabilidad garantizada"
     ],
     idealClient: "Propietarios y constructores",
-    icon: "🪨",
     category: "Acabados"
   },
   {
@@ -169,7 +159,6 @@ export const defaultServices: Service[] = [
       "Múltiples opciones de diseño"
     ],
     idealClient: "Propietarios y constructores",
-    icon: "📐",
     category: "Acabados"
   },
   {
@@ -184,7 +173,6 @@ export const defaultServices: Service[] = [
       "Técnicas especializadas"
     ],
     idealClient: "Propietarios y constructores",
-    icon: "🎨",
     category: "Acabados"
   },
   {
@@ -199,7 +187,6 @@ export const defaultServices: Service[] = [
       "Diseños a medida"
     ],
     idealClient: "Propietarios y constructores",
-    icon: "🚪",
     category: "Acabados"
   },
   
@@ -216,7 +203,6 @@ export const defaultServices: Service[] = [
       "Mantenimiento disponible"
     ],
     idealClient: "Propietarios y empresas",
-    icon: "⚡",
     category: "Instalaciones"
   },
   {
@@ -231,7 +217,6 @@ export const defaultServices: Service[] = [
       "Eficiencia garantizada"
     ],
     idealClient: "Propietarios y constructores",
-    icon: "🚰",
     category: "Instalaciones"
   },
   {
@@ -246,7 +231,6 @@ export const defaultServices: Service[] = [
       "Mantenimiento disponible"
     ],
     idealClient: "Propietarios y comercios",
-    icon: "🔥",
     category: "Instalaciones"
   },
   {
@@ -261,7 +245,6 @@ export const defaultServices: Service[] = [
       "Tecnología LED"
     ],
     idealClient: "Propietarios y diseñadores",
-    icon: "💡",
     category: "Instalaciones"
   },
   
@@ -278,7 +261,6 @@ export const defaultServices: Service[] = [
       "Instalación profesional"
     ],
     idealClient: "Propietarios y empresas",
-    icon: "🧱",
     category: "Exteriores"
   },
   {
@@ -293,7 +275,6 @@ export const defaultServices: Service[] = [
       "Valor agregado"
     ],
     idealClient: "Propietarios",
-    icon: "🚗",
     category: "Exteriores"
   },
   {
@@ -308,7 +289,6 @@ export const defaultServices: Service[] = [
       "Sistemas especializados"
     ],
     idealClient: "Propietarios",
-    icon: "🛡️",
     category: "Exteriores"
   },
   {
@@ -323,7 +303,6 @@ export const defaultServices: Service[] = [
       "Mantenimiento de áreas"
     ],
     idealClient: "Propietarios y desarrolladores",
-    icon: "🌧️",
     category: "Exteriores"
   },
   
@@ -340,7 +319,6 @@ export const defaultServices: Service[] = [
       "Optimización de recursos"
     ],
     idealClient: "Inversionistas y propietarios",
-    icon: "📊",
     category: "Gestión de obra"
   },
   {
@@ -355,7 +333,6 @@ export const defaultServices: Service[] = [
       "Supervisión técnica"
     ],
     idealClient: "Desarrolladores y propietarios",
-    icon: "👷",
     category: "Gestión de obra"
   },
   {
@@ -370,7 +347,6 @@ export const defaultServices: Service[] = [
       "Entrega completa"
     ],
     idealClient: "Inversionistas y propietarios",
-    icon: "🔑",
     category: "Gestión de obra"
   }
 ];
