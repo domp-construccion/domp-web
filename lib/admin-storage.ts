@@ -333,20 +333,33 @@ export async function getServices(): Promise<Service[]> {
     
     const services = await collection.find({}).toArray();
     
-    return services.map((s: any) => {
-      const { _id, ...serviceData } = s;
-      return {
-        ...serviceData,
-        id: _id.toString(),
-        category: serviceData.category || undefined,
-      } as Service;
-    });
+    if (services.length > 0) {
+      return services.map((s: any) => {
+        const { _id, ...serviceData } = s;
+        return {
+          ...serviceData,
+          id: _id.toString(),
+          category: serviceData.category || undefined,
+        } as Service;
+      });
+    }
+    
+    // Si no hay servicios en MongoDB, usar los por defecto
+    console.log("📝 No hay servicios en MongoDB, usando servicios por defecto");
+    const { defaultServices } = await import("@/lib/default-services");
+    return defaultServices;
   } catch (error) {
     const errorMessage = error instanceof Error ? error.message : String(error);
     console.warn("⚠️ MongoDB no disponible, usando servicios por defecto:", errorMessage);
     // Retornar servicios por defecto desde default-services.ts
-    const { defaultServices } = await import("@/lib/default-services");
-    return defaultServices;
+    try {
+      const { defaultServices } = await import("@/lib/default-services");
+      return defaultServices;
+    } catch (importError) {
+      console.error("❌ Error al importar default-services:", importError);
+      // Si falla el import, retornar array vacío para evitar crash
+      return [];
+    }
   }
 }
 

@@ -1,6 +1,6 @@
 import { Metadata } from "next";
 import SectionTitle from "@/components/SectionTitle";
-import { getServices } from "@/lib/admin-storage";
+import { getServices, type Service } from "@/lib/admin-storage";
 import Link from "next/link";
 
 export const metadata: Metadata = {
@@ -13,7 +13,29 @@ export const dynamic = "force-dynamic";
 export const revalidate = 0;
 
 export default async function EspecialidadesPage() {
-  const services = await getServices();
+  let services: Service[] = [];
+  try {
+    services = await getServices();
+  } catch (error) {
+    console.error("Error al cargar servicios:", error);
+  }
+
+  // Si no hay servicios, mostrar mensaje
+  if (!services || services.length === 0) {
+    return (
+      <div className="py-16">
+        <div className="container mx-auto px-4">
+          <SectionTitle
+            title="Nuestras Especialidades"
+            subtitle="Soluciones integrales en construcción para todos tus proyectos"
+          />
+          <div className="text-center py-12">
+            <p className="text-gray-600">No hay especialidades disponibles en este momento.</p>
+          </div>
+        </div>
+      </div>
+    );
+  }
 
   // Agrupar servicios por categoría
   const servicesByCategory = services.reduce((acc, service) => {

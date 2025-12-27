@@ -1,5 +1,5 @@
 import { Metadata } from "next";
-import { getServices } from "@/lib/admin-storage";
+import { getServices, type Service } from "@/lib/admin-storage";
 import { notFound } from "next/navigation";
 import Image from "next/image";
 import Link from "next/link";
@@ -13,23 +13,35 @@ export async function generateMetadata({
 }: {
   params: { id: string };
 }): Promise<Metadata> {
-  const services = await getServices();
-  const service = services.find((s) => s.id === params.id);
-  
-  if (!service) {
+  try {
+    const services = await getServices();
+    const service = services.find((s) => s.id === params.id);
+    
+    if (!service) {
+      return {
+        title: "Especialidad no encontrada | DomP Construcción",
+      };
+    }
+
     return {
-      title: "Especialidad no encontrada | DomP Construcción",
+      title: `${service.title} | DomP Construcción`,
+      description: service.description,
+    };
+  } catch (error) {
+    return {
+      title: "Especialidad | DomP Construcción",
     };
   }
-
-  return {
-    title: `${service.title} | DomP Construcción`,
-    description: service.description,
-  };
 }
 
 export default async function EspecialidadPage({ params }: { params: { id: string } }) {
-  const services = await getServices();
+  let services: Service[] = [];
+  try {
+    services = await getServices();
+  } catch (error) {
+    console.error("Error al cargar servicios:", error);
+  }
+  
   const service = services.find((s) => s.id === params.id);
 
   if (!service) {

@@ -1,13 +1,22 @@
 import SectionTitle from "./SectionTitle";
 import ServiceCard from "./ServiceCard";
-import { getServices } from "@/lib/admin-storage";
+import { getServices, type Service } from "@/lib/admin-storage";
 import Link from "next/link";
 
 export const dynamic = "force-dynamic";
 export const revalidate = 0;
 
 export default async function ServicesSection() {
-  const services = await getServices();
+  let services: Service[] = [];
+  try {
+    services = await getServices();
+  } catch (error) {
+    console.error("Error al cargar servicios:", error);
+  }
+
+  if (!services || services.length === 0) {
+    return null;
+  }
 
   return (
     <section className="py-16 bg-background-light">
