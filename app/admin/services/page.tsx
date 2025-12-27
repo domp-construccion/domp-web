@@ -14,6 +14,7 @@ type Service = {
   icon?: string;
   imageUrl?: string;
   category?: string;
+  galleryImages?: string[];
 };
 
 type ApiResponse =
@@ -37,6 +38,7 @@ export default function AdminServicesPage() {
     idealClient: "",
     imageUrl: "",
     category: "",
+    galleryImages: [],
   });
 
   const categories = [
@@ -143,6 +145,7 @@ export default function AdminServicesPage() {
       idealClient: service.idealClient,
       imageUrl: service.imageUrl || "",
       category: service.category || "",
+      galleryImages: service.galleryImages || [],
     });
     setShowForm(true);
   };
@@ -185,6 +188,24 @@ export default function AdminServicesPage() {
     setFormData({ ...formData, benefits: newBenefits.length > 0 ? newBenefits : [""] });
   };
 
+  const addGalleryImage = () => {
+    setFormData({
+      ...formData,
+      galleryImages: [...(formData.galleryImages || []), ""],
+    });
+  };
+
+  const updateGalleryImage = (index: number, value: string) => {
+    const newImages = [...(formData.galleryImages || [])];
+    newImages[index] = value;
+    setFormData({ ...formData, galleryImages: newImages });
+  };
+
+  const removeGalleryImage = (index: number) => {
+    const newImages = (formData.galleryImages || []).filter((_, i) => i !== index);
+    setFormData({ ...formData, galleryImages: newImages });
+  };
+
   if (isAuthenticated === null || loading) {
     return (
       <div className="min-h-screen bg-background-light flex items-center justify-center">
@@ -217,6 +238,7 @@ export default function AdminServicesPage() {
           idealClient: "",
           imageUrl: "",
           category: "",
+          galleryImages: [],
         });
               }}
               className="bg-accent text-white px-6 py-2 rounded-lg hover:bg-accent-hover transition-colors"
@@ -379,6 +401,53 @@ export default function AdminServicesPage() {
                       />
                     </div>
                   )}
+                </div>
+
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                    Galería de Imágenes (mínimo 5 recomendado)
+                  </label>
+                  {(formData.galleryImages || []).map((imageUrl, index) => (
+                    <div key={index} className="flex gap-2 mb-2">
+                      <input
+                        type="text"
+                        value={imageUrl}
+                        onChange={(e) => updateGalleryImage(index, e.target.value)}
+                        className="flex-1 px-4 py-2 border border-gray-300 rounded-lg"
+                        placeholder="/imagenes/especialidades/imagen-galería.jpg"
+                      />
+                      <button
+                        type="button"
+                        onClick={() => removeGalleryImage(index)}
+                        className="px-4 py-2 bg-red-100 text-red-700 rounded-lg hover:bg-red-200"
+                      >
+                        Eliminar
+                      </button>
+                      {imageUrl && (
+                        <div className="relative w-24 h-24 border border-gray-300 rounded">
+                          <Image
+                            src={imageUrl}
+                            alt={`Galería ${index + 1}`}
+                            fill
+                            className="object-cover rounded"
+                            onError={(e) => {
+                              (e.target as HTMLImageElement).style.display = "none";
+                            }}
+                          />
+                        </div>
+                      )}
+                    </div>
+                  ))}
+                  <button
+                    type="button"
+                    onClick={addGalleryImage}
+                    className="mt-2 px-4 py-2 bg-gray-100 text-gray-700 rounded-lg hover:bg-gray-200"
+                  >
+                    + Agregar Imagen a Galería
+                  </button>
+                  <p className="text-xs text-gray-500 mt-1">
+                    Coloca las imágenes en /public/imagenes/especialidades/ y usa la ruta relativa
+                  </p>
                 </div>
 
                 <div className="flex gap-4">

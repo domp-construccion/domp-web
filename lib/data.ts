@@ -8,6 +8,7 @@ export interface Service {
   imageUrl?: string;
   detailedDescription?: string;
   category?: string;
+  galleryImages?: string[];
 }
 
 export interface Project {

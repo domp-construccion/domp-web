@@ -156,6 +156,32 @@ export default async function EspecialidadPage({ params }: { params: Promise<{ i
           </div>
         </div>
 
+        {/* Gallery Section */}
+        {service.galleryImages && service.galleryImages.length > 0 && (
+          <div className="mt-16">
+            <h2 className="text-2xl md:text-3xl font-bold text-gray-900 mb-8 text-center">
+              Galería de Imágenes
+            </h2>
+            <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4">
+              {service.galleryImages.map((imageUrl, index) => (
+                <div key={index} className="relative aspect-square rounded-lg overflow-hidden shadow-md hover:shadow-xl transition-shadow">
+                  <SafeImage
+                    src={imageUrl}
+                    alt={`${service.title} - Imagen ${index + 1}`}
+                    fill
+                    className="object-cover"
+                    fallback={
+                      <div className="w-full h-full bg-gray-200 flex items-center justify-center">
+                        <span className="text-gray-400 text-2xl">📷</span>
+                      </div>
+                    }
+                  />
+                </div>
+              ))}
+            </div>
+          </div>
+        )}
+
         {/* Back Button */}
         <div className="mt-12">
           <Link

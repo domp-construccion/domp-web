@@ -342,6 +342,7 @@ export type Service = {
   icon?: string;
   imageUrl?: string;
   category?: string;
+  galleryImages?: string[];
 };
 
 export async function getServices(): Promise<Service[]> {

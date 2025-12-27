@@ -48,7 +48,7 @@ export async function POST(request: Request) {
     }
 
     const body = (await request.json()) as Omit<Service, "id">;
-    const { title, description, detailedDescription, benefits, idealClient, icon, imageUrl, category } = body;
+    const { title, description, detailedDescription, benefits, idealClient, icon, imageUrl, category, galleryImages } = body;
 
     if (!title || !description || !benefits || !idealClient) {
       return NextResponse.json(
@@ -71,6 +71,7 @@ export async function POST(request: Request) {
       icon: icon?.trim() || undefined,
       imageUrl: imageUrl?.trim() || undefined,
       category: category?.trim() || undefined,
+      galleryImages: galleryImages?.filter(img => img.trim() !== "") || undefined,
     };
 
     services.push(newService);
@@ -116,7 +117,7 @@ export async function PUT(request: Request) {
     }
 
     const body = (await request.json()) as Service;
-    const { id, title, description, detailedDescription, benefits, idealClient, icon, imageUrl, category } = body;
+    const { id, title, description, detailedDescription, benefits, idealClient, icon, imageUrl, category, galleryImages } = body;
 
     if (!id || !title || !description || !benefits || !idealClient) {
       return NextResponse.json(
@@ -145,6 +146,7 @@ export async function PUT(request: Request) {
       icon: icon?.trim() || undefined,
       imageUrl: imageUrl?.trim() || undefined,
       category: category?.trim() || undefined,
+      galleryImages: galleryImages?.filter(img => img.trim() !== "") || undefined,
     };
 
     await saveServices(services);
