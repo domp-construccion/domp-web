@@ -42,6 +42,16 @@ export default async function EspecialidadPage({ params }: { params: { id: strin
     console.error("Error al cargar servicios:", error);
   }
   
+  // Si no hay servicios, intentar cargar por defecto directamente
+  if (services.length === 0) {
+    try {
+      const { defaultServices } = await import("@/lib/default-services");
+      services = defaultServices;
+    } catch (error) {
+      console.error("Error al importar servicios por defecto:", error);
+    }
+  }
+  
   const service = services.find((s) => s.id === params.id);
 
   if (!service) {
@@ -78,7 +88,11 @@ export default async function EspecialidadPage({ params }: { params: { id: strin
               />
             ) : (
               <div className="w-full aspect-[4/3] bg-gradient-to-br from-primary to-accent rounded-lg shadow-lg flex items-center justify-center">
-                <div className="text-6xl lg:text-9xl opacity-50">{service.icon}</div>
+                {service.icon ? (
+                  <div className="text-6xl lg:text-9xl opacity-50">{service.icon}</div>
+                ) : (
+                  <div className="text-6xl lg:text-9xl opacity-50">📋</div>
+                )}
               </div>
             )}
           </div>

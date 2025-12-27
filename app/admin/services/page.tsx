@@ -11,7 +11,7 @@ type Service = {
   detailedDescription?: string;
   benefits: string[];
   idealClient: string;
-  icon: string;
+  icon?: string;
   imageUrl?: string;
   category?: string;
 };
@@ -35,7 +35,6 @@ export default function AdminServicesPage() {
     detailedDescription: "",
     benefits: [""],
     idealClient: "",
-    icon: "🏠",
     imageUrl: "",
     category: "",
   });
@@ -115,8 +114,8 @@ export default function AdminServicesPage() {
           detailedDescription: "",
           benefits: [""],
           idealClient: "",
-          icon: "🏠",
           imageUrl: "",
+          category: "",
         });
         setError(null);
         loadServices();
@@ -142,7 +141,6 @@ export default function AdminServicesPage() {
       detailedDescription: service.detailedDescription || "",
       benefits: service.benefits.length > 0 ? service.benefits : [""],
       idealClient: service.idealClient,
-      icon: service.icon,
       imageUrl: service.imageUrl || "",
       category: service.category || "",
     });
@@ -211,16 +209,15 @@ export default function AdminServicesPage() {
               onClick={() => {
                 setShowForm(true);
                 setEditingService(null);
-                setFormData({
-                  title: "",
-                  description: "",
-                  detailedDescription: "",
-                  benefits: [""],
-                  idealClient: "",
-                  icon: "🏠",
-                  imageUrl: "",
-                  category: "",
-                });
+        setFormData({
+          title: "",
+          description: "",
+          detailedDescription: "",
+          benefits: [""],
+          idealClient: "",
+          imageUrl: "",
+          category: "",
+        });
               }}
               className="bg-accent text-white px-6 py-2 rounded-lg hover:bg-accent-hover transition-colors"
             >
@@ -255,45 +252,24 @@ export default function AdminServicesPage() {
                   />
                 </div>
 
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                  <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-2">
-                      Icono (Emoji) *
-                    </label>
-                    <input
-                      type="text"
-                      value={formData.icon}
-                      onChange={(e) =>
-                        setFormData({ ...formData, icon: e.target.value })
-                      }
-                      className="w-full px-4 py-2 border border-gray-300 rounded-lg"
-                      placeholder="🏠"
-                      maxLength={2}
-                      required
-                    />
-                    <p className="text-xs text-gray-500 mt-1">
-                      Usa un emoji (ej: 🏠, 🏢, 🔨)
-                    </p>
-                  </div>
-                  <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-2">
-                      Categoría
-                    </label>
-                    <select
-                      value={formData.category}
-                      onChange={(e) =>
-                        setFormData({ ...formData, category: e.target.value })
-                      }
-                      className="w-full px-4 py-2 border border-gray-300 rounded-lg"
-                    >
-                      <option value="">Seleccionar categoría</option>
-                      {categories.map((cat) => (
-                        <option key={cat} value={cat}>
-                          {cat}
-                        </option>
-                      ))}
-                    </select>
-                  </div>
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                    Categoría
+                  </label>
+                  <select
+                    value={formData.category}
+                    onChange={(e) =>
+                      setFormData({ ...formData, category: e.target.value })
+                    }
+                    className="w-full px-4 py-2 border border-gray-300 rounded-lg"
+                  >
+                    <option value="">Seleccionar categoría</option>
+                    {categories.map((cat) => (
+                      <option key={cat} value={cat}>
+                        {cat}
+                      </option>
+                    ))}
+                  </select>
                 </div>
 
                 <div>
@@ -447,7 +423,7 @@ export default function AdminServicesPage() {
                 <div className="p-4">
                   <div className="flex items-start justify-between mb-2">
                     <div className="flex items-center gap-2">
-                      <span className="text-2xl">{service.icon}</span>
+                      {service.icon && <span className="text-2xl">{service.icon}</span>}
                       <h3 className="font-bold text-gray-900">{service.title}</h3>
                     </div>
                   </div>

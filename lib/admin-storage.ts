@@ -339,7 +339,7 @@ export type Service = {
   detailedDescription?: string;
   benefits: string[];
   idealClient: string;
-  icon: string;
+  icon?: string;
   imageUrl?: string;
   category?: string;
 };

@@ -50,7 +50,7 @@ export async function POST(request: Request) {
     const body = (await request.json()) as Omit<Service, "id">;
     const { title, description, detailedDescription, benefits, idealClient, icon, imageUrl, category } = body;
 
-    if (!title || !description || !benefits || !idealClient || !icon) {
+    if (!title || !description || !benefits || !idealClient) {
       return NextResponse.json(
         { ok: false, message: "Faltan campos requeridos" },
         { status: 400 },
@@ -68,7 +68,7 @@ export async function POST(request: Request) {
       detailedDescription: detailedDescription?.trim() || undefined,
       benefits: benefits.filter(b => b.trim() !== ""),
       idealClient: idealClient.trim(),
-      icon: icon.trim(),
+      icon: icon?.trim() || undefined,
       imageUrl: imageUrl?.trim() || undefined,
       category: category?.trim() || undefined,
     };
@@ -118,7 +118,7 @@ export async function PUT(request: Request) {
     const body = (await request.json()) as Service;
     const { id, title, description, detailedDescription, benefits, idealClient, icon, imageUrl, category } = body;
 
-    if (!id || !title || !description || !benefits || !idealClient || !icon) {
+    if (!id || !title || !description || !benefits || !idealClient) {
       return NextResponse.json(
         { ok: false, message: "Faltan campos requeridos" },
         { status: 400 },
@@ -142,7 +142,7 @@ export async function PUT(request: Request) {
       detailedDescription: detailedDescription?.trim() || undefined,
       benefits: benefits.filter(b => b.trim() !== ""),
       idealClient: idealClient.trim(),
-      icon: icon.trim(),
+      icon: icon?.trim() || undefined,
       imageUrl: imageUrl?.trim() || undefined,
       category: category?.trim() || undefined,
     };

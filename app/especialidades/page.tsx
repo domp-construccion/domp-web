@@ -20,7 +20,17 @@ export default async function EspecialidadesPage() {
     console.error("Error al cargar servicios:", error);
   }
 
-  // Si no hay servicios, mostrar mensaje
+  // Si no hay servicios, intentar cargar por defecto
+  if (!services || services.length === 0) {
+    try {
+      const { defaultServices } = await import("@/lib/default-services");
+      services = defaultServices;
+    } catch (error) {
+      console.error("Error al importar servicios por defecto:", error);
+    }
+  }
+
+  // Si aún no hay servicios, mostrar mensaje
   if (!services || services.length === 0) {
     return (
       <div className="py-16">
@@ -70,7 +80,9 @@ export default async function EspecialidadesPage() {
                     href={`/especialidades/${service.id}`}
                     className="bg-white rounded-lg shadow-md p-6 hover:shadow-xl transition-all transform hover:-translate-y-1"
                   >
-                    <div className="text-5xl mb-4 text-center">{service.icon}</div>
+                    {service.icon && (
+                      <div className="text-5xl mb-4 text-center">{service.icon}</div>
+                    )}
                     <h3 className="text-xl font-bold text-gray-900 mb-3 text-center">
                       {service.title}
                     </h3>

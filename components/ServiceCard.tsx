@@ -11,7 +11,9 @@ export default function ServiceCard({ service }: ServiceCardProps) {
       href={`/especialidades/${service.id}`}
       className="block bg-white rounded-lg shadow-md p-6 hover:shadow-xl transition-all transform hover:-translate-y-1"
     >
-      <div className="text-4xl mb-4">{service.icon}</div>
+      {service.icon && (
+        <div className="text-4xl mb-4">{service.icon}</div>
+      )}
       <h3 className="text-xl font-bold text-gray-900 mb-3">{service.title}</h3>
       <p className="text-gray-600 mb-4">{service.description}</p>
       <ul className="space-y-2 mb-4">

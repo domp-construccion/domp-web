@@ -4,7 +4,7 @@ export interface Service {
   description: string;
   benefits: string[];
   idealClient: string;
-  icon: string;
+  icon?: string;
   imageUrl?: string;
   detailedDescription?: string;
   category?: string;
