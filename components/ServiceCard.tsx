@@ -1,5 +1,6 @@
 import { Service } from "@/lib/data";
 import Link from "next/link";
+import ServiceIcon from "./ServiceIcon";
 
 interface ServiceCardProps {
   service: Service;
@@ -11,6 +12,9 @@ export default function ServiceCard({ service }: ServiceCardProps) {
       href={`/especialidades/${service.id}`}
       className="block bg-white rounded-lg shadow-md p-6 hover:shadow-xl transition-all transform hover:-translate-y-1"
     >
+      <div className="flex justify-center mb-4">
+        <ServiceIcon serviceId={service.id} size={48} className="text-gray-900" />
+      </div>
       <h3 className="text-xl font-bold text-gray-900 mb-3">{service.title}</h3>
       <p className="text-gray-600 mb-4">{service.description}</p>
       <ul className="space-y-2 mb-4">

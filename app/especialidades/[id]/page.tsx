@@ -4,6 +4,7 @@ import { notFound } from "next/navigation";
 import Image from "next/image";
 import Link from "next/link";
 import SafeImage from "@/components/SafeImage";
+import ServiceIcon from "@/components/ServiceIcon";
 
 export const dynamic = "force-dynamic";
 export const revalidate = 0;
@@ -92,7 +93,7 @@ export default async function EspecialidadPage({ params }: { params: Promise<{ i
               />
             ) : (
               <div className="w-full aspect-[4/3] bg-gradient-to-br from-primary to-accent rounded-lg shadow-lg flex items-center justify-center">
-                <div className="text-6xl lg:text-9xl opacity-50 text-white">📋</div>
+                <ServiceIcon serviceId={service.id} size={120} className="text-white opacity-50" />
               </div>
             )}
           </div>

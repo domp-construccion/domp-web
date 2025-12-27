@@ -1,0 +1,224 @@
+<svg xmlns="http://www.w3.org/2000/svg" style="display:none">
+
+
+
+  <!-- CONSTRUCCIÓN -->
+
+  <symbol id="vivienda" viewBox="0 0 64 64">
+
+    <path d="M14 30L32 14l18 16v20H14z" fill="none" stroke="currentColor" stroke-width="2.5"/>
+
+  </symbol>
+
+
+
+  <symbol id="bodega" viewBox="0 0 64 64">
+
+    <rect x="12" y="18" width="40" height="32" fill="none" stroke="currentColor" stroke-width="2.5"/>
+
+  </symbol>
+
+
+
+  <symbol id="ampliacion" viewBox="0 0 64 64">
+
+    <path d="M14 36L32 20l18 16" fill="none" stroke="currentColor" stroke-width="2.5"/>
+
+    <path d="M32 10v12" fill="none" stroke="currentColor" stroke-width="2.5"/>
+
+  </symbol>
+
+
+
+  <symbol id="estructura" viewBox="0 0 64 64">
+
+    <rect x="12" y="28" width="40" height="20" fill="none" stroke="currentColor" stroke-width="2.5"/>
+
+  </symbol>
+
+
+
+  <!-- REMODELACIÓN -->
+
+  <symbol id="remodelacion" viewBox="0 0 64 64">
+
+    <path d="M14 30L32 14l18 16v20H14z" fill="none" stroke="currentColor" stroke-width="2.5"/>
+
+    <path d="M24 46l16-16" fill="none" stroke="currentColor" stroke-width="2.5"/>
+
+  </symbol>
+
+
+
+  <symbol id="cocina-bano" viewBox="0 0 64 64">
+
+    <rect x="18" y="28" width="28" height="16" fill="none" stroke="currentColor" stroke-width="2.5"/>
+
+    <path d="M32 28v-10" fill="none" stroke="currentColor" stroke-width="2.5"/>
+
+  </symbol>
+
+
+
+  <symbol id="reconfiguracion" viewBox="0 0 64 64">
+
+    <rect x="12" y="12" width="40" height="40" fill="none" stroke="currentColor" stroke-width="2.5"/>
+
+    <path d="M32 12v20H12" fill="none" stroke="currentColor" stroke-width="2.5"/>
+
+  </symbol>
+
+
+
+  <symbol id="fachada" viewBox="0 0 64 64">
+
+    <path d="M14 52V22l18-8 18 8v30" fill="none" stroke="currentColor" stroke-width="2.5"/>
+
+  </symbol>
+
+
+
+  <!-- ACABADOS -->
+
+  <symbol id="pisos" viewBox="0 0 64 64">
+
+    <rect x="12" y="12" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5"/>
+
+    <rect x="36" y="12" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5"/>
+
+    <rect x="12" y="36" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5"/>
+
+    <rect x="36" y="36" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5"/>
+
+  </symbol>
+
+
+
+  <symbol id="plafones" viewBox="0 0 64 64">
+
+    <rect x="10" y="22" width="44" height="24" fill="none" stroke="currentColor" stroke-width="2.5"/>
+
+  </symbol>
+
+
+
+  <symbol id="pintura" viewBox="0 0 64 64">
+
+    <rect x="16" y="14" width="32" height="22" fill="none" stroke="currentColor" stroke-width="2.5"/>
+
+    <path d="M32 36v12" fill="none" stroke="currentColor" stroke-width="2.5"/>
+
+  </symbol>
+
+
+
+  <symbol id="carpinteria" viewBox="0 0 64 64">
+
+    <rect x="20" y="10" width="24" height="44" fill="none" stroke="currentColor" stroke-width="2.5"/>
+
+  </symbol>
+
+
+
+  <!-- INSTALACIONES -->
+
+  <symbol id="electricidad" viewBox="0 0 64 64">
+
+    <path d="M34 6L18 36h12l-2 22 18-30H32z" fill="none" stroke="currentColor" stroke-width="2.5"/>
+
+  </symbol>
+
+
+
+  <symbol id="hidraulica" viewBox="0 0 64 64">
+
+    <path d="M32 8v20" fill="none" stroke="currentColor" stroke-width="2.5"/>
+
+    <path d="M20 28h24v14a12 12 0 0 1-24 0z" fill="none" stroke="currentColor" stroke-width="2.5"/>
+
+  </symbol>
+
+
+
+  <symbol id="gas" viewBox="0 0 64 64">
+
+    <path d="M32 10c6 8 8 12 8 18a8 8 0 1 1-16 0c0-6 2-10 8-18z" fill="none" stroke="currentColor" stroke-width="2.5"/>
+
+  </symbol>
+
+
+
+  <symbol id="iluminacion" viewBox="0 0 64 64">
+
+    <path d="M32 10a14 14 0 0 1 8 26v6H24v-6a14 14 0 0 1 8-26z" fill="none" stroke="currentColor" stroke-width="2.5"/>
+
+  </symbol>
+
+
+
+  <!-- EXTERIORES -->
+
+  <symbol id="bardas" viewBox="0 0 64 64">
+
+    <rect x="10" y="30" width="44" height="18" fill="none" stroke="currentColor" stroke-width="2.5"/>
+
+  </symbol>
+
+
+
+  <symbol id="cochera" viewBox="0 0 64 64">
+
+    <path d="M10 32l22-12 22 12" fill="none" stroke="currentColor" stroke-width="2.5"/>
+
+  </symbol>
+
+
+
+  <symbol id="impermeabilizacion" viewBox="0 0 64 64">
+
+    <path d="M32 10l18 8v14c0 12-8 22-18 26" fill="none" stroke="currentColor" stroke-width="2.5"/>
+
+  </symbol>
+
+
+
+  <symbol id="drenaje" viewBox="0 0 64 64">
+
+    <path d="M32 24v24" fill="none" stroke="currentColor" stroke-width="2.5"/>
+
+    <path d="M26 42l6 6 6-6" fill="none" stroke="currentColor" stroke-width="2.5"/>
+
+  </symbol>
+
+
+
+  <!-- GESTIÓN -->
+
+  <symbol id="costos" viewBox="0 0 64 64">
+
+    <path d="M18 54V26M32 54V14M46 54V34" fill="none" stroke="currentColor" stroke-width="2.5"/>
+
+  </symbol>
+
+
+
+  <symbol id="supervision" viewBox="0 0 64 64">
+
+    <circle cx="32" cy="18" r="6" fill="none" stroke="currentColor" stroke-width="2.5"/>
+
+    <path d="M20 46a12 12 0 0 1 24 0" fill="none" stroke="currentColor" stroke-width="2.5"/>
+
+  </symbol>
+
+
+
+  <symbol id="llave" viewBox="0 0 64 64">
+
+    <path d="M32 10l18 12v28H14V22z" fill="none" stroke="currentColor" stroke-width="2.5"/>
+
+  </symbol>
+
+
+
+</svg>
+
