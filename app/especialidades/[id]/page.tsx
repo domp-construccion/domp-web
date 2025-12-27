@@ -4,7 +4,6 @@ import { notFound } from "next/navigation";
 import Image from "next/image";
 import Link from "next/link";
 import SafeImage from "@/components/SafeImage";
-import ServiceIcon from "@/components/ServiceIcon";
 
 export const dynamic = "force-dynamic";
 export const revalidate = 0;
@@ -12,11 +11,12 @@ export const revalidate = 0;
 export async function generateMetadata({
   params,
 }: {
-  params: { id: string };
+  params: Promise<{ id: string }>;
 }): Promise<Metadata> {
   try {
+    const { id } = await params;
     const services = await getServices();
-    const service = services.find((s) => s.id === params.id);
+    const service = services.find((s) => s.id === id);
     
     if (!service) {
       return {
@@ -35,8 +35,10 @@ export async function generateMetadata({
   }
 }
 
-export default async function EspecialidadPage({ params }: { params: { id: string } }) {
+export default async function EspecialidadPage({ params }: { params: Promise<{ id: string }> }) {
+  const { id } = await params;
   let services: Service[] = [];
+  
   try {
     services = await getServices();
   } catch (error) {
@@ -53,9 +55,10 @@ export default async function EspecialidadPage({ params }: { params: { id: strin
     }
   }
   
-  const service = services.find((s) => s.id === params.id);
+  const service = services.find((s) => s.id === id);
 
   if (!service) {
+    console.error(`Servicio no encontrado: ${id}. Servicios disponibles:`, services.map(s => s.id));
     notFound();
   }
 
@@ -89,7 +92,7 @@ export default async function EspecialidadPage({ params }: { params: { id: strin
               />
             ) : (
               <div className="w-full aspect-[4/3] bg-gradient-to-br from-primary to-accent rounded-lg shadow-lg flex items-center justify-center">
-                <ServiceIcon name={service.id} size={120} className="text-white opacity-50" />
+                <div className="text-6xl lg:text-9xl opacity-50 text-white">📋</div>
               </div>
             )}
           </div>
