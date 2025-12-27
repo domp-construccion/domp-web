@@ -1,5 +1,5 @@
 import { getSettings } from "@/lib/admin-storage";
-import SocialButtons from "@/components/SocialButtons";
+import SocialButtonsWrapper from "@/components/SocialButtonsWrapper";
 
 export const dynamic = "force-dynamic";
 export const revalidate = 0;
@@ -78,7 +78,7 @@ export default async function ContactInfo() {
         </div>
         <div className="mt-6">
           <h3 className="font-semibold text-gray-900 mb-4">Síguenos en redes sociales</h3>
-          <SocialButtons />
+          <SocialButtonsWrapper />
         </div>
       </div>
 

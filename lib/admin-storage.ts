@@ -159,8 +159,12 @@ export { DEFAULT_SETTINGS };
 export async function getSettings(): Promise<SiteSettings> {
   try {
     const db = await getDb();
-    const collection = db.collection("settings");
+    if (!db) {
+      console.warn("⚠️ MongoDB no configurado, usando valores por defecto para settings");
+      return DEFAULT_SETTINGS;
+    }
     
+    const collection = db.collection("settings");
     const settings = await collection.findOne({ _id: "site" });
     
     if (settings) {
@@ -170,7 +174,11 @@ export async function getSettings(): Promise<SiteSettings> {
     }
     
     console.log("📝 No hay settings en MongoDB, insertando valores por defecto");
-    await collection.insertOne({ _id: "site", ...DEFAULT_SETTINGS });
+    try {
+      await collection.insertOne({ _id: "site", ...DEFAULT_SETTINGS });
+    } catch (insertError) {
+      console.warn("⚠️ No se pudo insertar settings en MongoDB, usando valores por defecto");
+    }
     return DEFAULT_SETTINGS;
   } catch (error) {
     const errorMessage = error instanceof Error ? error.message : String(error);
@@ -183,6 +191,9 @@ export async function saveSettings(settings: SiteSettings): Promise<void> {
   try {
     console.log("💾 Iniciando guardado de settings en MongoDB...");
     const db = await getDb();
+    if (!db) {
+      throw new Error("MongoDB no está configurado. No se pueden guardar los settings.");
+    }
     const collection = db.collection("settings");
     
     console.log("💾 Guardando settings en MongoDB:", JSON.stringify({ emails: settings.emails, phones: settings.phones }, null, 2));
@@ -237,8 +248,12 @@ export type Project = {
 export async function getProjects(): Promise<Project[]> {
   try {
     const db = await getDb();
-    const collection = db.collection("projects");
+    if (!db) {
+      console.warn("⚠️ MongoDB no configurado, retornando array vacío de proyectos");
+      return [];
+    }
     
+    const collection = db.collection("projects");
     const projects = await collection.find({}).toArray();
     
     return projects.map((p: any) => {
@@ -259,6 +274,9 @@ export async function saveProjects(projects: Project[]): Promise<void> {
   try {
     console.log(`💾 Iniciando guardado de ${projects.length} proyecto(s) en MongoDB...`);
     const db = await getDb();
+    if (!db) {
+      throw new Error("MongoDB no está configurado. No se pueden guardar los proyectos.");
+    }
     const collection = db.collection("projects");
     
     const mongoProjects = projects.map((p: Project) => {
@@ -329,8 +347,13 @@ export type Service = {
 export async function getServices(): Promise<Service[]> {
   try {
     const db = await getDb();
-    const collection = db.collection("services");
+    if (!db) {
+      console.warn("⚠️ MongoDB no configurado, usando servicios por defecto");
+      const { defaultServices } = await import("@/lib/default-services");
+      return defaultServices;
+    }
     
+    const collection = db.collection("services");
     const services = await collection.find({}).toArray();
     
     if (services.length > 0) {
@@ -367,6 +390,9 @@ export async function saveServices(services: Service[]): Promise<void> {
   try {
     console.log(`💾 Iniciando guardado de ${services.length} servicio(s) en MongoDB...`);
     const db = await getDb();
+    if (!db) {
+      throw new Error("MongoDB no está configurado. No se pueden guardar los servicios.");
+    }
     const collection = db.collection("services");
     
     const mongoServices = services.map((s: Service) => {

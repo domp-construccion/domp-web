@@ -30,9 +30,7 @@ if (uri) {
 
 export async function getDb() {
   if (!clientPromise) {
-    throw new Error(
-      "MONGODB_URI no está configurado. No es posible conectarse a MongoDB.",
-    );
+    return null;
   }
 
   try {
@@ -44,16 +42,8 @@ export async function getDb() {
     return client.db();
   } catch (error) {
     console.error("Error al conectar con MongoDB:", error);
-    const errorMessage = error instanceof Error ? error.message : "Error desconocido";
-    
-    // Si es un error de DNS, dar sugerencias
-    if (errorMessage.includes("ENOTFOUND") || errorMessage.includes("querySrv")) {
-      throw new Error(
-        `Error de conexión a MongoDB Atlas. Verifica: 1) Tu conexión a internet, 2) Que el cluster de MongoDB Atlas esté activo (no pausado), 3) Que tu IP esté en la whitelist de MongoDB Atlas.`,
-      );
-    }
-    
-    throw new Error(`No se pudo conectar a MongoDB: ${errorMessage}`);
+    // En lugar de lanzar error, retornar null para que el código pueda continuar
+    return null;
   }
 }
 

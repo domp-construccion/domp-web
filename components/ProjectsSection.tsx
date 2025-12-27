@@ -1,13 +1,18 @@
 import SectionTitle from "./SectionTitle";
 import ProjectCard from "./ProjectCard";
-import { getPublishedProjects } from "@/lib/admin-storage";
+import { getPublishedProjects, type Project } from "@/lib/admin-storage";
 import Link from "next/link";
 
 export const dynamic = "force-dynamic";
 export const revalidate = 0;
 
 export default async function ProjectsSection() {
-  const projects = await getPublishedProjects();
+  let projects: Project[] = [];
+  try {
+    projects = await getPublishedProjects();
+  } catch (error) {
+    console.error("Error al cargar proyectos:", error);
+  }
   const featuredProjects = projects.slice(0, 6);
 
   return (

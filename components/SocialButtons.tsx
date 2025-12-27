@@ -1,36 +1,24 @@
-import Link from "next/link";
-import { getSettings } from "@/lib/admin-storage";
+"use client";
 
-export const dynamic = "force-dynamic";
-export const revalidate = 0;
+interface SocialButtonsProps {
+  whatsapp?: string;
+  instagram?: string;
+  facebook?: string;
+  buttonColor?: string;
+  buttonHoverColor?: string;
+}
 
-export default async function SocialButtons() {
-  let settings;
-  try {
-    settings = await getSettings();
-  } catch (error) {
-    console.warn("Error al cargar settings en SocialButtons:", error);
-    settings = {
-      whatsapp: "6142156600",
-      social: {
-        instagram: "https://www.instagram.com/domp.mx?igsh=b2xhM3JkdXg3N2p4",
-        facebook: "https://www.facebook.com/share/16rTmPc5Zm/?mibextid=wwXIfr",
-      },
-    };
-  }
-
-  const whatsapp = settings.whatsapp || "";
-  const instagram = settings.social?.instagram || "";
-  const facebook = settings.social?.facebook || "";
-
+export default function SocialButtons({
+  whatsapp = "",
+  instagram = "",
+  facebook = "",
+  buttonColor = "#F18121",
+  buttonHoverColor = "#e0771a",
+}: SocialButtonsProps) {
   // Si no hay enlaces, no mostrar nada
   if (!whatsapp && !instagram && !facebook) {
     return null;
   }
-
-  // Colores de los botones (usar colores del tema o valores por defecto)
-  const buttonColor = settings.colors?.socialButtons || settings.colors?.accent || "#F18121";
-  const buttonHoverColor = settings.colors?.socialButtonsHover || settings.colors?.accentHover || "#e0771a";
 
   return (
     <div className="flex items-center gap-4">
@@ -39,15 +27,9 @@ export default async function SocialButtons() {
           href={`https://wa.me/${whatsapp.replace(/\s/g, "").replace(/\+/g, "")}`}
           target="_blank"
           rel="noopener noreferrer"
-          className="flex items-center justify-center w-10 h-10 rounded-full text-white transition-colors"
+          className="flex items-center justify-center w-10 h-10 rounded-full text-white transition-colors hover:opacity-90"
           style={{
             backgroundColor: buttonColor,
-          }}
-          onMouseEnter={(e) => {
-            e.currentTarget.style.backgroundColor = buttonHoverColor;
-          }}
-          onMouseLeave={(e) => {
-            e.currentTarget.style.backgroundColor = buttonColor;
           }}
           aria-label="WhatsApp"
         >
@@ -66,15 +48,9 @@ export default async function SocialButtons() {
           href={instagram}
           target="_blank"
           rel="noopener noreferrer"
-          className="flex items-center justify-center w-10 h-10 rounded-full text-white transition-colors"
+          className="flex items-center justify-center w-10 h-10 rounded-full text-white transition-colors hover:opacity-90"
           style={{
             backgroundColor: buttonColor,
-          }}
-          onMouseEnter={(e) => {
-            e.currentTarget.style.backgroundColor = buttonHoverColor;
-          }}
-          onMouseLeave={(e) => {
-            e.currentTarget.style.backgroundColor = buttonColor;
           }}
           aria-label="Instagram"
         >
@@ -93,15 +69,9 @@ export default async function SocialButtons() {
           href={facebook}
           target="_blank"
           rel="noopener noreferrer"
-          className="flex items-center justify-center w-10 h-10 rounded-full text-white transition-colors"
+          className="flex items-center justify-center w-10 h-10 rounded-full text-white transition-colors hover:opacity-90"
           style={{
             backgroundColor: buttonColor,
-          }}
-          onMouseEnter={(e) => {
-            e.currentTarget.style.backgroundColor = buttonHoverColor;
-          }}
-          onMouseLeave={(e) => {
-            e.currentTarget.style.backgroundColor = buttonColor;
           }}
           aria-label="Facebook"
         >
