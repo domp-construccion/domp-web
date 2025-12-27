@@ -2,7 +2,7 @@ import { Metadata } from "next";
 import SectionTitle from "@/components/SectionTitle";
 import { getServices, type Service } from "@/lib/admin-storage";
 import Link from "next/link";
-import ServiceIcon from "@/components/ServiceIcon";
+import SafeImage from "@/components/SafeImage";
 
 export const metadata: Metadata = {
   title: "Especialidades | DomP Construcción",
@@ -82,7 +82,26 @@ export default async function EspecialidadesPage() {
                     className="bg-white rounded-lg shadow-md p-6 hover:shadow-xl transition-all transform hover:-translate-y-1"
                   >
                     <div className="flex justify-center mb-4">
-                      <ServiceIcon serviceId={service.id} size={48} className="text-gray-900" />
+                      {service.imageUrl ? (
+                        <div className="w-[150px] h-[150px] rounded-[6px] overflow-hidden">
+                          <SafeImage
+                            src={service.imageUrl}
+                            alt={service.title}
+                            width={400}
+                            height={400}
+                            className="w-full h-full object-cover"
+                            fallback={
+                              <div className="w-full h-full bg-gray-200 flex items-center justify-center">
+                                <span className="text-gray-400 text-4xl">📋</span>
+                              </div>
+                            }
+                          />
+                        </div>
+                      ) : (
+                        <div className="w-[150px] h-[150px] bg-gray-200 rounded-[6px] flex items-center justify-center">
+                          <span className="text-gray-400 text-4xl">📋</span>
+                        </div>
+                      )}
                     </div>
                     <h3 className="text-xl font-bold text-gray-900 mb-3 text-center">
                       {service.title}
