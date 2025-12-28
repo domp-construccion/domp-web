@@ -27,15 +27,21 @@ export default function SafeImage({
   // Normalizar la ruta
   const getImageSrc = () => {
     if (!src) return null;
+    
+    // Limpiar espacios en blanco
+    const cleanSrc = src.trim();
+    
     // Si ya empieza con / o http, usarla tal cual
-    if (src.startsWith('/') || src.startsWith('http')) {
-      return src;
+    if (cleanSrc.startsWith('/') || cleanSrc.startsWith('http')) {
+      return cleanSrc;
     }
+    
     // Si no, agregar / al inicio
-    return `/${src}`;
+    return `/${cleanSrc}`;
   };
 
   const imageSrc = getImageSrc();
+  const isLocalImage = imageSrc && !imageSrc.startsWith('http');
 
   if (!imageSrc || error) {
     return (
@@ -58,8 +64,12 @@ export default function SafeImage({
       src={imageSrc}
       alt={alt}
       {...imageProps}
-      onError={() => setError(true)}
-      unoptimized={imageSrc.startsWith('http')}
+      onError={(e) => {
+        console.error("Error cargando imagen:", imageSrc, e);
+        setError(true);
+      }}
+      unoptimized={isLocalImage || imageSrc.startsWith('http')}
+      priority={false}
     />
   );
 }

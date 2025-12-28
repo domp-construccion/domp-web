@@ -9,11 +9,9 @@ const nextConfig: NextConfig = {
       },
     ],
     unoptimized: false,
-    // Permitir imágenes locales desde public/
-    domains: [],
+    // Permitir imágenes locales sin optimización para evitar problemas
+    formats: ['image/avif', 'image/webp'],
   },
-  // Asegurar que los archivos estáticos se sirvan correctamente
-  output: 'standalone',
 };
 
 export default nextConfig;
