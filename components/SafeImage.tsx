@@ -55,6 +55,33 @@ export default function SafeImage({
     );
   }
 
+  // Para imágenes locales, usar img normal para evitar problemas con Next.js Image
+  if (isLocalImage) {
+    const containerStyle = fill 
+      ? { position: 'relative' as const, width: '100%', height: '100%' }
+      : { width: width || 400, height: height || 300 };
+    
+    const imgStyle = fill
+      ? { objectFit: 'cover' as const, width: '100%', height: '100%' }
+      : { width: '100%', height: '100%', objectFit: 'cover' as const };
+
+    return (
+      <div style={containerStyle} className={fill ? "absolute inset-0" : ""}>
+        <img
+          src={imageSrc}
+          alt={alt}
+          style={imgStyle}
+          className={className}
+          onError={(e) => {
+            console.error("Error cargando imagen local:", imageSrc, e);
+            setError(true);
+          }}
+        />
+      </div>
+    );
+  }
+
+  // Para imágenes remotas, usar Next.js Image
   const imageProps = fill
     ? { fill: true, className }
     : { width: width || 400, height: height || 300, className };
@@ -65,10 +92,10 @@ export default function SafeImage({
       alt={alt}
       {...imageProps}
       onError={(e) => {
-        console.error("Error cargando imagen:", imageSrc, e);
+        console.error("Error cargando imagen remota:", imageSrc, e);
         setError(true);
       }}
-      unoptimized={isLocalImage || imageSrc.startsWith('http')}
+      unoptimized={true}
       priority={false}
     />
   );
