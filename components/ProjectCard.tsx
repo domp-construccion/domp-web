@@ -33,18 +33,24 @@ export default function ProjectCard({
 
   const content = (
     <div className="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-xl transition-shadow">
-      <div className="relative h-48 w-full">
-        <SafeImage
-          src={project.imageUrl}
-          alt={project.name}
-          fill
-          className="object-cover"
-          fallback={
-            <div className="h-48 bg-primary flex items-center justify-center">
-              <span className="text-6xl">🏗️</span>
-            </div>
-          }
-        />
+      <div className="relative h-56 w-full bg-gray-100">
+        {project.imageUrl ? (
+          <SafeImage
+            src={project.imageUrl}
+            alt={project.name}
+            fill
+            className="object-contain"
+            fallback={
+              <div className="absolute inset-0 bg-primary flex items-center justify-center">
+                <span className="text-5xl">🏗️</span>
+              </div>
+            }
+          />
+        ) : (
+          <div className="absolute inset-0 bg-gray-200 flex items-center justify-center">
+            <span className="text-5xl">🏗️</span>
+          </div>
+        )}
       </div>
       <div className="p-6">
         <div className="flex items-center justify-between mb-2">

@@ -83,13 +83,12 @@ export default async function EspecialidadesPage() {
                   >
                     <div className="flex justify-center mb-4">
                       {service.imageUrl ? (
-                        <div className="w-[150px] h-[150px] rounded-[6px] overflow-hidden">
+                        <div className="relative w-[150px] h-[150px] rounded-[6px] overflow-hidden">
                           <SafeImage
                             src={service.imageUrl}
                             alt={service.title}
-                            width={400}
-                            height={400}
-                            className="w-full h-full object-cover"
+                            fill
+                            className="object-cover"
                             fallback={
                               <div className="w-full h-full bg-gray-200 flex items-center justify-center">
                                 <span className="text-gray-400 text-4xl">📋</span>

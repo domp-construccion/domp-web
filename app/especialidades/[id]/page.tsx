@@ -79,17 +79,26 @@ export default async function EspecialidadPage({ params }: { params: Promise<{ i
         </nav>
 
         {/* Main Content - Layout: Image Left, Text Right */}
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12 items-start">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12 items-center">
           {/* Left Side - Image */}
-          <div className="order-2 lg:order-1">
+          <div className="order-1">
             {service.imageUrl ? (
-              <SafeImage
-                src={service.imageUrl}
-                alt={service.title}
-                width={800}
-                height={600}
-                className="w-full h-auto rounded-lg shadow-lg object-cover"
-              />
+              <div className="w-full rounded-lg shadow-lg overflow-hidden bg-gray-50 flex items-center justify-center p-4">
+                <div className="relative w-full min-h-[400px]" style={{ maxHeight: '600px' }}>
+                  <SafeImage
+                    src={service.imageUrl}
+                    alt={service.title}
+                    width={800}
+                    height={600}
+                    className="w-full h-auto object-contain rounded-lg"
+                    fallback={
+                      <div className="w-full aspect-[4/3] bg-gray-200 rounded-lg flex items-center justify-center">
+                        <span className="text-gray-400 text-6xl">📋</span>
+                      </div>
+                    }
+                  />
+                </div>
+              </div>
             ) : (
               <div className="w-full aspect-[4/3] bg-gray-200 rounded-lg shadow-lg flex items-center justify-center">
                 <span className="text-gray-400 text-6xl">📋</span>
@@ -98,7 +107,7 @@ export default async function EspecialidadPage({ params }: { params: Promise<{ i
           </div>
 
           {/* Right Side - Text Content */}
-          <div className="order-1 lg:order-2">
+          <div className="order-2">
             <h1 className="text-3xl md:text-4xl font-bold text-gray-900 mb-6">
               {service.title}
             </h1>

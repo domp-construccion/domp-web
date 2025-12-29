@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import Image from "next/image";
+import ImageUploader from "@/components/ImageUploader";
 import {
   type SiteSettings,
   type TeamMember,
@@ -322,28 +323,14 @@ export default function AdminNosotrosPage() {
                     />
                   </div>
                   <div className="mb-4">
-                    <label className="block text-sm font-medium text-gray-700 mb-2">
-                      URL de Foto
-                    </label>
-                    <input
-                      type="text"
-                      value={member.imageUrl || ""}
-                      onChange={(e) =>
-                        updateTeamMember(index, "imageUrl", e.target.value)
-                      }
-                      className="w-full px-4 py-2 border border-gray-300 rounded-lg"
-                      placeholder="/imagenes/equipo/nombre.jpg"
+                    <ImageUploader
+                      onUploadSuccess={(url) => {
+                        updateTeamMember(index, "imageUrl", url);
+                      }}
+                      currentImageUrl={member.imageUrl}
+                      label={`Foto de ${member.role || "Miembro del Equipo"}`}
+                      folder="domp/equipo"
                     />
-                    {member.imageUrl && (
-                      <div className="mt-2 relative w-24 h-24">
-                        <Image
-                          src={member.imageUrl}
-                          alt={member.name || member.role}
-                          fill
-                          className="object-cover rounded"
-                        />
-                      </div>
-                    )}
                   </div>
                   <button
                     type="button"

@@ -70,15 +70,15 @@ export default async function ProjectDetailPage({
         </Link>
 
         <div className="bg-white rounded-lg shadow-lg overflow-hidden">
-          <div className="relative h-64 w-full">
+          <div className="relative h-80 w-full bg-gray-100">
             <SafeImage
               src={project.imageUrl}
               alt={project.name}
               fill
-              className="object-cover"
+              className="object-contain"
               fallback={
-                <div className="h-64 bg-primary flex items-center justify-center">
-                  <span className="text-8xl">🏗️</span>
+                <div className="absolute inset-0 bg-primary flex items-center justify-center">
+                  <span className="text-6xl">🏗️</span>
                 </div>
               }
             />

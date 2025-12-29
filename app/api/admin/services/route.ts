@@ -50,6 +50,14 @@ export async function POST(request: Request) {
     const body = (await request.json()) as Omit<Service, "id">;
     const { title, description, detailedDescription, benefits, idealClient, icon, imageUrl, category, galleryImages } = body;
 
+    console.log("📥 POST /api/admin/services - Datos recibidos:", {
+      title,
+      imageUrl,
+      galleryImages,
+      hasImageUrl: !!imageUrl,
+      galleryImagesCount: galleryImages?.length || 0,
+    });
+
     if (!title || !description || !benefits || !idealClient) {
       return NextResponse.json(
         { ok: false, message: "Faltan campos requeridos" },
@@ -74,8 +82,17 @@ export async function POST(request: Request) {
       galleryImages: galleryImages?.filter(img => img.trim() !== "") || undefined,
     };
 
+    console.log("💾 Servicio a guardar:", {
+      id: newService.id,
+      title: newService.title,
+      imageUrl: newService.imageUrl,
+      galleryImages: newService.galleryImages,
+    });
+
     services.push(newService);
     await saveServices(services);
+    
+    console.log("✅ Servicio guardado en base de datos");
 
     return NextResponse.json({
       ok: true,
@@ -119,6 +136,15 @@ export async function PUT(request: Request) {
     const body = (await request.json()) as Service;
     const { id, title, description, detailedDescription, benefits, idealClient, icon, imageUrl, category, galleryImages } = body;
 
+    console.log("📥 PUT /api/admin/services - Datos recibidos:", {
+      id,
+      title,
+      imageUrl,
+      galleryImages,
+      hasImageUrl: !!imageUrl,
+      galleryImagesCount: galleryImages?.length || 0,
+    });
+
     if (!id || !title || !description || !benefits || !idealClient) {
       return NextResponse.json(
         { ok: false, message: "Faltan campos requeridos" },
@@ -149,7 +175,16 @@ export async function PUT(request: Request) {
       galleryImages: galleryImages?.filter(img => img.trim() !== "") || undefined,
     };
 
+    console.log("💾 Servicio actualizado:", {
+      id: services[index].id,
+      title: services[index].title,
+      imageUrl: services[index].imageUrl,
+      galleryImages: services[index].galleryImages,
+    });
+
     await saveServices(services);
+    
+    console.log("✅ Servicio actualizado en base de datos");
 
     return NextResponse.json({
       ok: true,

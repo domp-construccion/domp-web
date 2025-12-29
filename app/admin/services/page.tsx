@@ -3,6 +3,8 @@
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import Image from "next/image";
+import ImageUploader from "@/components/ImageUploader";
+import GalleryUploader from "@/components/GalleryUploader";
 
 type Service = {
   id: string;
@@ -99,6 +101,13 @@ export default function AdminServicesPage() {
         ? { ...formData, id: editingService.id }
         : formData;
 
+      console.log("💾 Enviando datos al servidor:", {
+        method,
+        imageUrl: body.imageUrl,
+        galleryImages: body.galleryImages,
+        title: body.title,
+      });
+
       const response = await fetch(url, {
         method,
         headers: { "Content-Type": "application/json" },
@@ -108,6 +117,7 @@ export default function AdminServicesPage() {
       const result = await response.json();
 
       if (result.ok) {
+        console.log("✅ Servicio guardado exitosamente:", result.data);
         setShowForm(false);
         setEditingService(null);
         setFormData({
@@ -118,6 +128,7 @@ export default function AdminServicesPage() {
           idealClient: "",
           imageUrl: "",
           category: "",
+          galleryImages: [],
         });
         setError(null);
         loadServices();
@@ -188,23 +199,6 @@ export default function AdminServicesPage() {
     setFormData({ ...formData, benefits: newBenefits.length > 0 ? newBenefits : [""] });
   };
 
-  const addGalleryImage = () => {
-    setFormData({
-      ...formData,
-      galleryImages: [...(formData.galleryImages || []), ""],
-    });
-  };
-
-  const updateGalleryImage = (index: number, value: string) => {
-    const newImages = [...(formData.galleryImages || [])];
-    newImages[index] = value;
-    setFormData({ ...formData, galleryImages: newImages });
-  };
-
-  const removeGalleryImage = (index: number) => {
-    const newImages = (formData.galleryImages || []).filter((_, i) => i !== index);
-    setFormData({ ...formData, galleryImages: newImages });
-  };
 
   if (isAuthenticated === null || loading) {
     return (
@@ -372,83 +366,40 @@ export default function AdminServicesPage() {
                   />
                 </div>
 
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">
-                    URL de Imagen
-                  </label>
-                  <input
-                    type="text"
-                    value={formData.imageUrl}
-                    onChange={(e) =>
-                      setFormData({ ...formData, imageUrl: e.target.value })
-                    }
-                    className="w-full px-4 py-2 border border-gray-300 rounded-lg"
-                    placeholder="/imagenes/especialidades/nombre-imagen.jpg"
-                  />
-                  <p className="text-xs text-gray-500 mt-1">
-                    Coloca la imagen en /public/imagenes/especialidades/ y usa la ruta relativa
-                  </p>
-                  {formData.imageUrl && (
-                    <div className="mt-2 relative w-48 h-32 border border-gray-300 rounded">
-                      <Image
-                        src={formData.imageUrl}
-                        alt="Vista previa"
-                        fill
-                        className="object-cover rounded"
-                        onError={(e) => {
-                          (e.target as HTMLImageElement).style.display = "none";
-                        }}
-                      />
-                    </div>
-                  )}
-                </div>
+                <ImageUploader
+                  onUploadSuccess={(url) => {
+                    console.log("🔄 Actualizando formData con imageUrl:", url);
+                    setFormData((prev) => {
+                      console.log("📋 formData anterior:", prev);
+                      const updated = { ...prev, imageUrl: url };
+                      console.log("📋 formData actualizado:", updated);
+                      return updated;
+                    });
+                  }}
+                  currentImageUrl={formData.imageUrl}
+                  label="Imagen Principal"
+                  folder="domp/especialidades"
+                />
 
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">
-                    Galería de Imágenes (mínimo 5 recomendado)
-                  </label>
-                  {(formData.galleryImages || []).map((imageUrl, index) => (
-                    <div key={index} className="flex gap-2 mb-2">
-                      <input
-                        type="text"
-                        value={imageUrl}
-                        onChange={(e) => updateGalleryImage(index, e.target.value)}
-                        className="flex-1 px-4 py-2 border border-gray-300 rounded-lg"
-                        placeholder="/imagenes/especialidades/imagen-galería.jpg"
-                      />
-                      <button
-                        type="button"
-                        onClick={() => removeGalleryImage(index)}
-                        className="px-4 py-2 bg-red-100 text-red-700 rounded-lg hover:bg-red-200"
-                      >
-                        Eliminar
-                      </button>
-                      {imageUrl && (
-                        <div className="relative w-24 h-24 border border-gray-300 rounded">
-                          <Image
-                            src={imageUrl}
-                            alt={`Galería ${index + 1}`}
-                            fill
-                            className="object-cover rounded"
-                            onError={(e) => {
-                              (e.target as HTMLImageElement).style.display = "none";
-                            }}
-                          />
-                        </div>
-                      )}
-                    </div>
-                  ))}
-                  <button
-                    type="button"
-                    onClick={addGalleryImage}
-                    className="mt-2 px-4 py-2 bg-gray-100 text-gray-700 rounded-lg hover:bg-gray-200"
-                  >
-                    + Agregar Imagen a Galería
-                  </button>
-                  <p className="text-xs text-gray-500 mt-1">
-                    Coloca las imágenes en /public/imagenes/especialidades/ y usa la ruta relativa
-                  </p>
-                </div>
+                <GalleryUploader
+                  onUploadSuccess={(url) => {
+                    console.log("🔄 Agregando imagen a galería:", url);
+                    setFormData((prev) => {
+                      console.log("📋 Galería anterior:", prev.galleryImages);
+                      const updated = {
+                        ...prev,
+                        galleryImages: [...(prev.galleryImages || []), url],
+                      };
+                      console.log("📋 Galería actualizada:", updated.galleryImages);
+                      return updated;
+                    });
+                  }}
+                  currentImages={formData.galleryImages || []}
+                  onRemoveImage={(index) => {
+                    const newImages = (formData.galleryImages || []).filter((_, i) => i !== index);
+                    setFormData({ ...formData, galleryImages: newImages });
+                  }}
+                />
 
                 <div className="flex gap-4">
                   <button

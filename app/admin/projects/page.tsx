@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import Image from "next/image";
+import ImageUploader from "@/components/ImageUploader";
 
 type Project = {
   id: string;
@@ -316,24 +317,14 @@ export default function AdminProjectsPage() {
                   </div>
                 </div>
 
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">
-                    URL de Imagen
-                  </label>
-                  <input
-                    type="url"
-                    value={formData.imageUrl}
-                    onChange={(e) =>
-                      setFormData({ ...formData, imageUrl: e.target.value })
-                    }
-                    className="w-full px-4 py-2 border border-gray-300 rounded-lg"
-                    placeholder="/imagenes/proyectos/nombre-imagen.jpg"
-                  />
-                  <p className="text-xs text-gray-500 mt-1">
-                    Coloca la imagen en /public/imagenes/proyectos/ y usa la ruta
-                    relativa
-                  </p>
-                </div>
+                <ImageUploader
+                  onUploadSuccess={(url) => {
+                    setFormData({ ...formData, imageUrl: url });
+                  }}
+                  currentImageUrl={formData.imageUrl}
+                  label="Imagen del Proyecto"
+                  folder="domp/proyectos"
+                />
 
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-2">

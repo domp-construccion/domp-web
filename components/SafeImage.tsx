@@ -1,7 +1,7 @@
 "use client";
 
 import Image from "next/image";
-import { useState } from "react";
+import { useState, useCallback } from "react";
 
 interface SafeImageProps {
   src: string | null | undefined;
@@ -24,12 +24,24 @@ export default function SafeImage({
 }: SafeImageProps) {
   const [error, setError] = useState(false);
 
+  const handleImageError = useCallback(() => {
+    console.error("Error cargando imagen:", src);
+    setError(true);
+  }, [src]);
+
   // Normalizar la ruta
   const getImageSrc = () => {
     if (!src) return null;
     
     // Limpiar espacios en blanco
-    const cleanSrc = src.trim();
+    let cleanSrc = src.trim();
+    
+    // Remover /public/ si está presente (Next.js sirve public/ sin ese prefijo)
+    if (cleanSrc.startsWith('/public/')) {
+      cleanSrc = cleanSrc.replace('/public', '');
+    } else if (cleanSrc.startsWith('public/')) {
+      cleanSrc = '/' + cleanSrc.replace('public/', '');
+    }
     
     // Si ya empieza con / o http, usarla tal cual
     if (cleanSrc.startsWith('/') || cleanSrc.startsWith('http')) {
@@ -43,7 +55,15 @@ export default function SafeImage({
   const imageSrc = getImageSrc();
   const isLocalImage = imageSrc && !imageSrc.startsWith('http');
 
+  // Debug logging
+  if (fill && imageSrc) {
+    console.log("🖼️ SafeImage render:", { src, imageSrc, isLocalImage, fill, className });
+  }
+
   if (!imageSrc || error) {
+    if (fill) {
+      console.warn("⚠️ SafeImage: No imageSrc o error", { src, imageSrc, error });
+    }
     return (
       <div className={fill ? "absolute inset-0" : ""} style={!fill ? { width, height } : undefined}>
         {fallback || (
@@ -57,31 +77,70 @@ export default function SafeImage({
 
   // Para imágenes locales, usar img normal para evitar problemas con Next.js Image
   if (isLocalImage) {
-    const containerStyle = fill 
-      ? { position: 'relative' as const, width: '100%', height: '100%' }
-      : { width: width || 400, height: height || 300 };
+    // Determinar objectFit basado en className
+    const hasObjectContain = className.includes('object-contain');
+    const defaultObjectFit: 'contain' | 'cover' = hasObjectContain ? 'contain' : 'cover';
     
-    const imgStyle = fill
-      ? { objectFit: 'cover' as const, width: '100%', height: '100%' }
-      : { width: '100%', height: '100%', objectFit: 'cover' as const };
-
-    return (
-      <div style={containerStyle} className={fill ? "absolute inset-0" : ""}>
+    if (fill) {
+      return (
         <img
           src={imageSrc}
           alt={alt}
-          style={imgStyle}
           className={className}
-          onError={(e) => {
-            console.error("Error cargando imagen local:", imageSrc, e);
-            setError(true);
+          style={{
+            position: 'absolute',
+            top: 0,
+            left: 0,
+            width: '100%',
+            height: '100%',
+            objectFit: defaultObjectFit,
           }}
+          onError={handleImageError}
+        />
+      );
+    }
+    
+    return (
+      <div style={{ width: width || 400, height: height || 300 }}>
+        <img
+          src={imageSrc}
+          alt={alt}
+          className={className}
+          style={{
+            width: '100%',
+            height: '100%',
+            objectFit: defaultObjectFit,
+          }}
+          onError={handleImageError}
         />
       </div>
     );
   }
 
-  // Para imágenes remotas, usar Next.js Image
+  // Para imágenes remotas, si usamos object-contain con fill, usar img directo
+  const hasObjectContain = className.includes('object-contain');
+  
+  if (fill && hasObjectContain) {
+    // Para object-contain con fill, usar img directo para mejor control
+    return (
+      <img
+        src={imageSrc}
+        alt={alt}
+        className={className}
+        style={{
+          position: 'absolute',
+          top: 0,
+          left: 0,
+          width: '100%',
+          height: '100%',
+          objectFit: 'contain',
+        }}
+        onError={handleImageError}
+      />
+    );
+  }
+
+  // Para imágenes remotas normales, usar Next.js Image
   const imageProps = fill
     ? { fill: true, className }
     : { width: width || 400, height: height || 300, className };
@@ -91,10 +150,7 @@ export default function SafeImage({
       src={imageSrc}
       alt={alt}
       {...imageProps}
-      onError={(e) => {
-        console.error("Error cargando imagen remota:", imageSrc, e);
-        setError(true);
-      }}
+      onError={handleImageError}
       unoptimized={true}
       priority={false}
     />

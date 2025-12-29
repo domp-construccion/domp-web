@@ -14,7 +14,7 @@ export default async function SocialButtonsWrapper() {
       whatsapp: "6142156600",
       social: {
         instagram: "https://www.instagram.com/domp.mx?igsh=b2xhM3JkdXg3N2p4",
-        facebook: "https://www.facebook.com/share/16rTmPc5Zm/?mibextid=wwXIfr",
+        facebook: "https://www.facebook.com/share/16xCQJfdFa/?mibextid=wwXIfr",
       },
       colors: {
         socialButtons: "#F18121",

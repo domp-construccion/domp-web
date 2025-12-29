@@ -64,7 +64,7 @@ const DEFAULT_SETTINGS: SiteSettings = {
   serviceAreas: ["Chihuahua y alrededores"],
   social: {
     instagram: "https://www.instagram.com/domp.mx?igsh=b2xhM3JkdXg3N2p4",
-    facebook: "https://www.facebook.com/share/16rTmPc5Zm/?mibextid=wwXIfr",
+    facebook: "https://www.facebook.com/share/16xCQJfdFa/?mibextid=wwXIfr",
     tiktok: "",
     linkedin: "",
   },
