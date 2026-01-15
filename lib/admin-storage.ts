@@ -52,6 +52,14 @@ export type SiteSettings = {
     textDark: string;
     socialButtons?: string;
     socialButtonsHover?: string;
+    headerBackground?: string;
+    headerText?: string;
+    headerTextHover?: string;
+  };
+  logos?: {
+    principal?: string;
+    secundario?: string;
+    footer?: string;
   };
 };
 
@@ -150,6 +158,14 @@ const DEFAULT_SETTINGS: SiteSettings = {
     textDark: "#171719",
     socialButtons: "#F18121",
     socialButtonsHover: "#e0771a",
+    headerBackground: "#F18121",
+    headerText: "#FFFFFF",
+    headerTextHover: "#101932",
+  },
+  logos: {
+    principal: "/images/logo-principal.png",
+    secundario: "/images/logo-secundario.png",
+    footer: "/images/logo-abajo.jpg",
   },
 };
 
@@ -169,7 +185,31 @@ export async function getSettings(): Promise<SiteSettings> {
     
     if (settings) {
       const { _id, ...settingsData } = settings;
+      // Asegurar que los logos tengan valores por defecto si no existen o están vacíos
+      if (!settingsData.logos || Object.keys(settingsData.logos).length === 0) {
+        settingsData.logos = DEFAULT_SETTINGS.logos;
+      } else {
+        // Asegurar que cada logo tenga un valor por defecto si falta
+        settingsData.logos = {
+          principal: settingsData.logos.principal || DEFAULT_SETTINGS.logos.principal,
+          secundario: settingsData.logos.secundario || DEFAULT_SETTINGS.logos.secundario,
+          footer: settingsData.logos.footer || DEFAULT_SETTINGS.logos.footer,
+        };
+      }
+      // Asegurar que los colores del header tengan valores por defecto si no existen
+      if (!settingsData.colors) {
+        settingsData.colors = DEFAULT_SETTINGS.colors;
+      } else {
+        settingsData.colors = {
+          ...DEFAULT_SETTINGS.colors,
+          ...settingsData.colors,
+          headerBackground: settingsData.colors.headerBackground || DEFAULT_SETTINGS.colors.headerBackground,
+          headerText: settingsData.colors.headerText || DEFAULT_SETTINGS.colors.headerText,
+          headerTextHover: settingsData.colors.headerTextHover || DEFAULT_SETTINGS.colors.headerTextHover,
+        };
+      }
       console.log("📊 Settings obtenidos de MongoDB:", JSON.stringify({ emails: settingsData.emails, phones: settingsData.phones }, null, 2));
+      console.log("🎨 Logos obtenidos de MongoDB:", JSON.stringify(settingsData.logos, null, 2));
       return settingsData as SiteSettings;
     }
     
@@ -197,6 +237,7 @@ export async function saveSettings(settings: SiteSettings): Promise<void> {
     const collection = db.collection("settings");
     
     console.log("💾 Guardando settings en MongoDB:", JSON.stringify({ emails: settings.emails, phones: settings.phones }, null, 2));
+    console.log("🎨 Guardando logos en MongoDB:", JSON.stringify(settings.logos, null, 2));
     
     const result = await collection.updateOne(
       { _id: "site" },

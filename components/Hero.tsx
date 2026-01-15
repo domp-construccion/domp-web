@@ -1,7 +1,15 @@
 import Link from "next/link";
 import Image from "next/image";
+import { getSettings } from "@/lib/admin-storage";
 
-export default function Hero() {
+export const dynamic = "force-dynamic";
+export const revalidate = 0;
+
+export default async function Hero() {
+  const settings = await getSettings();
+  const logoUrl = settings.logos?.principal || "/images/logo-principal.png";
+  console.log("🎨 Hero - Logo URL:", logoUrl, "Settings logos:", settings.logos);
+
   return (
     <section className="relative bg-white text-text-dark py-16 md:py-24">
       <div className="container mx-auto px-4">
@@ -9,12 +17,13 @@ export default function Hero() {
           {/* Logo Principal */}
           <div className="mb-8 md:mb-10 flex justify-center">
             <Image
-              src="/images/logo-principal.png"
+              src={logoUrl}
               alt="DomP Logo Principal"
               width={1200}
               height={480}
               className="h-auto w-auto max-w-[90%] md:max-w-[700px] lg:max-w-[1000px] xl:max-w-[1200px]"
               priority
+              unoptimized={logoUrl.startsWith("http")}
             />
           </div>
 

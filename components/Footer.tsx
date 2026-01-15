@@ -13,6 +13,7 @@ export default async function Footer() {
   try {
     settings = await getSettings();
     console.log("📖 Settings cargados en Footer:", JSON.stringify(settings.emails, null, 2));
+    console.log("🎨 Footer - Logo URL:", settings.logos?.footer || "/images/logo-abajo.jpg", "Settings logos:", settings.logos);
   } catch (error) {
     console.error("❌ Error al cargar settings en Footer:", error);
     // Valores por defecto si falla
@@ -35,11 +36,12 @@ export default async function Footer() {
           <div>
             <div className="mb-4">
               <Image
-                src="/images/logo-abajo.jpg"
+                src={settings.logos?.footer || "/images/logo-abajo.jpg"}
                 alt="DomP Logo"
                 width={300}
                 height={150}
                 className="h-auto w-auto max-w-full"
+                unoptimized={(settings.logos?.footer || "").startsWith("http")}
               />
             </div>
             <p className="text-gray-400 mb-4">

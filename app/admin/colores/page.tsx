@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { type SiteSettings } from "@/lib/admin-storage";
+import ImageUploader from "@/components/ImageUploader";
 
 type ApiResponse =
   | { ok: true; data: SiteSettings }
@@ -105,7 +106,7 @@ export default function AdminColoresPage() {
       <div className="container mx-auto px-4 max-w-4xl">
         <div className="bg-white rounded-lg shadow-md p-8">
           <div className="flex items-center justify-between mb-6">
-            <h1 className="text-3xl font-bold text-gray-900">Colores</h1>
+            <h1 className="text-3xl font-bold text-gray-900">Colores y Logos</h1>
             <Link
               href="/admin"
               className="text-accent hover:text-accent-hover font-medium"
@@ -445,13 +446,224 @@ export default function AdminColoresPage() {
               </div>
             </div>
 
+            {/* Sección de Colores del Header */}
+            <div className="pt-8 border-t border-gray-200">
+              <h2 className="text-2xl font-bold text-gray-900 mb-6">Colores del Header (Cabecera)</h2>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                {/* Color de Fondo del Header */}
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                    Color de Fondo del Header
+                  </label>
+                  <div className="flex gap-2">
+                    <input
+                      type="color"
+                      value={settings.colors.headerBackground || settings.colors.accent}
+                      onChange={(e) =>
+                        setSettings({
+                          ...settings,
+                          colors: {
+                            ...settings.colors,
+                            headerBackground: e.target.value,
+                          },
+                        })
+                      }
+                      className="w-16 h-10 rounded border border-gray-300"
+                    />
+                    <input
+                      type="text"
+                      value={settings.colors.headerBackground || settings.colors.accent}
+                      onChange={(e) =>
+                        setSettings({
+                          ...settings,
+                          colors: {
+                            ...settings.colors,
+                            headerBackground: e.target.value,
+                          },
+                        })
+                      }
+                      className="flex-1 px-4 py-2 border border-gray-300 rounded-lg"
+                      placeholder="#F18121"
+                    />
+                  </div>
+                  <div
+                    className="mt-2 h-12 rounded"
+                    style={{ backgroundColor: settings.colors.headerBackground || settings.colors.accent }}
+                  />
+                </div>
+
+                {/* Color del Texto del Header */}
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                    Color del Texto de los Enlaces
+                  </label>
+                  <div className="flex gap-2">
+                    <input
+                      type="color"
+                      value={settings.colors.headerText || "#FFFFFF"}
+                      onChange={(e) =>
+                        setSettings({
+                          ...settings,
+                          colors: {
+                            ...settings.colors,
+                            headerText: e.target.value,
+                          },
+                        })
+                      }
+                      className="w-16 h-10 rounded border border-gray-300"
+                    />
+                    <input
+                      type="text"
+                      value={settings.colors.headerText || "#FFFFFF"}
+                      onChange={(e) =>
+                        setSettings({
+                          ...settings,
+                          colors: {
+                            ...settings.colors,
+                            headerText: e.target.value,
+                          },
+                        })
+                      }
+                      className="flex-1 px-4 py-2 border border-gray-300 rounded-lg"
+                      placeholder="#FFFFFF"
+                    />
+                  </div>
+                  <div
+                    className="mt-2 h-12 rounded flex items-center justify-center"
+                    style={{ 
+                      backgroundColor: settings.colors.headerBackground || settings.colors.accent,
+                      color: settings.colors.headerText || "#FFFFFF"
+                    }}
+                  >
+                    <span className="text-sm font-medium">Ejemplo de Enlace</span>
+                  </div>
+                </div>
+
+                {/* Color Hover del Texto del Header */}
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                    Color Hover del Texto de los Enlaces
+                  </label>
+                  <div className="flex gap-2">
+                    <input
+                      type="color"
+                      value={settings.colors.headerTextHover || settings.colors.primary}
+                      onChange={(e) =>
+                        setSettings({
+                          ...settings,
+                          colors: {
+                            ...settings.colors,
+                            headerTextHover: e.target.value,
+                          },
+                        })
+                      }
+                      className="w-16 h-10 rounded border border-gray-300"
+                    />
+                    <input
+                      type="text"
+                      value={settings.colors.headerTextHover || settings.colors.primary}
+                      onChange={(e) =>
+                        setSettings({
+                          ...settings,
+                          colors: {
+                            ...settings.colors,
+                            headerTextHover: e.target.value,
+                          },
+                        })
+                      }
+                      className="flex-1 px-4 py-2 border border-gray-300 rounded-lg"
+                      placeholder="#101932"
+                    />
+                  </div>
+                  <div
+                    className="mt-2 h-12 rounded flex items-center justify-center"
+                    style={{ 
+                      backgroundColor: settings.colors.headerBackground || settings.colors.accent,
+                      color: settings.colors.headerTextHover || settings.colors.primary
+                    }}
+                  >
+                    <span className="text-sm font-medium">Ejemplo Hover</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {/* Sección de Logos */}
+            <div className="pt-8 border-t border-gray-200">
+              <h2 className="text-2xl font-bold text-gray-900 mb-6">Logos</h2>
+              <div className="space-y-6">
+                {/* Logo Principal */}
+                <div>
+                  <ImageUploader
+                    label="Logo Principal (Hero)"
+                    currentImageUrl={settings.logos?.principal || "/images/logo-principal.png"}
+                    folder="domp/logos"
+                    onUploadSuccess={(url) => {
+                      setSettings({
+                        ...settings,
+                        logos: {
+                          ...settings.logos,
+                          principal: url,
+                        },
+                      });
+                    }}
+                  />
+                  <p className="text-xs text-gray-500 mt-1">
+                    Logo que aparece en la página principal (Hero)
+                  </p>
+                </div>
+
+                {/* Logo Secundario */}
+                <div>
+                  <ImageUploader
+                    label="Logo Secundario (Header)"
+                    currentImageUrl={settings.logos?.secundario || "/images/logo-secundario.png"}
+                    folder="domp/logos"
+                    onUploadSuccess={(url) => {
+                      setSettings({
+                        ...settings,
+                        logos: {
+                          ...settings.logos,
+                          secundario: url,
+                        },
+                      });
+                    }}
+                  />
+                  <p className="text-xs text-gray-500 mt-1">
+                    Logo que aparece en el header (navegación)
+                  </p>
+                </div>
+
+                {/* Logo Footer */}
+                <div>
+                  <ImageUploader
+                    label="Logo Footer"
+                    currentImageUrl={settings.logos?.footer || "/images/logo-abajo.jpg"}
+                    folder="domp/logos"
+                    onUploadSuccess={(url) => {
+                      setSettings({
+                        ...settings,
+                        logos: {
+                          ...settings.logos,
+                          footer: url,
+                        },
+                      });
+                    }}
+                  />
+                  <p className="text-xs text-gray-500 mt-1">
+                    Logo que aparece en el footer
+                  </p>
+                </div>
+              </div>
+            </div>
+
             <div className="pt-6 border-t border-gray-200">
               <button
                 onClick={handleSave}
                 disabled={saving}
                 className="w-full bg-accent text-white px-6 py-3 rounded-lg font-semibold hover:bg-accent-hover transition-colors disabled:opacity-50"
               >
-                {saving ? "Guardando..." : "Guardar Colores"}
+                {saving ? "Guardando..." : "Guardar Cambios"}
               </button>
             </div>
           </div>

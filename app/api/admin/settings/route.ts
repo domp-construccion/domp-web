@@ -87,6 +87,11 @@ export async function PUT(request: Request) {
     console.log("📥 Body recibido:", JSON.stringify(body, null, 2));
     console.log("📋 Settings actuales:", JSON.stringify(currentSettings, null, 2));
     
+    // Asegurar que los logos existan en currentSettings
+    if (!currentSettings.logos) {
+      currentSettings.logos = DEFAULT_SETTINGS.logos;
+    }
+    
     // Merge profundo para arrays y objetos anidados
     const updatedSettings: SiteSettings = {
       ...currentSettings,
@@ -103,7 +108,10 @@ export async function PUT(request: Request) {
       hero: body.hero !== undefined ? { ...currentSettings.hero, ...body.hero } : currentSettings.hero,
       nosotros: body.nosotros !== undefined ? { ...currentSettings.nosotros, ...body.nosotros } : currentSettings.nosotros,
       colors: body.colors !== undefined ? { ...currentSettings.colors, ...body.colors } : currentSettings.colors,
+      logos: body.logos !== undefined ? { ...(currentSettings.logos || DEFAULT_SETTINGS.logos), ...body.logos } : (currentSettings.logos || DEFAULT_SETTINGS.logos),
     };
+    
+    console.log("🎨 Logos en updatedSettings:", JSON.stringify(updatedSettings.logos, null, 2));
 
     console.log("💾 Settings a guardar:", JSON.stringify(updatedSettings, null, 2));
     

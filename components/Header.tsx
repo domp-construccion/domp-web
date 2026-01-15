@@ -2,10 +2,46 @@
 
 import Link from "next/link";
 import Image from "next/image";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 export default function Header() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [logoUrl, setLogoUrl] = useState("/images/logo-secundario.png");
+  const [headerBackground, setHeaderBackground] = useState("#F18121");
+  const [headerText, setHeaderText] = useState("#FFFFFF");
+  const [headerTextHover, setHeaderTextHover] = useState("#101932");
+
+  useEffect(() => {
+    const loadSettings = async () => {
+      try {
+        const response = await fetch("/api/settings");
+        const result = await response.json();
+        console.log("🎨 Header - Settings cargados:", result.data?.logos);
+        if (result.ok && result.data) {
+          if (result.data.logos?.secundario) {
+            console.log("🎨 Header - Actualizando logo a:", result.data.logos.secundario);
+            setLogoUrl(result.data.logos.secundario);
+          }
+          if (result.data.colors?.headerBackground) {
+            setHeaderBackground(result.data.colors.headerBackground);
+          } else if (result.data.colors?.accent) {
+            setHeaderBackground(result.data.colors.accent);
+          }
+          if (result.data.colors?.headerText) {
+            setHeaderText(result.data.colors.headerText);
+          }
+          if (result.data.colors?.headerTextHover) {
+            setHeaderTextHover(result.data.colors.headerTextHover);
+          } else if (result.data.colors?.primary) {
+            setHeaderTextHover(result.data.colors.primary);
+          }
+        }
+      } catch (error) {
+        console.warn("Error al cargar settings:", error);
+      }
+    };
+    loadSettings();
+  }, []);
 
   const navLinks = [
     { href: "/", label: "Inicio" },
@@ -16,18 +52,22 @@ export default function Header() {
   ];
 
   return (
-    <header className="sticky top-0 z-50 bg-[#F18121] shadow-md">
+    <header 
+      className="sticky top-0 z-50 shadow-md"
+      style={{ backgroundColor: headerBackground }}
+    >
       <nav className="container mx-auto px-4 py-2.5">
         <div className="flex items-center justify-between">
           {/* Logo Secundario */}
           <Link href="/" className="flex items-center">
             <Image
-              src="/images/logo-secundario.png"
+              src={logoUrl}
               alt="DomP Logo"
               width={120}
               height={60}
               className="h-auto w-auto max-w-[100px] md:max-w-[120px]"
               priority
+              unoptimized={logoUrl.startsWith("http")}
             />
           </Link>
 
@@ -37,7 +77,16 @@ export default function Header() {
               <Link
                 key={link.href}
                 href={link.href}
-                className="text-white hover:text-primary transition-colors font-medium"
+                className="transition-colors font-medium"
+                style={{ 
+                  color: headerText,
+                }}
+                onMouseEnter={(e) => {
+                  e.currentTarget.style.color = headerTextHover;
+                }}
+                onMouseLeave={(e) => {
+                  e.currentTarget.style.color = headerText;
+                }}
               >
                 {link.label}
               </Link>
@@ -46,7 +95,8 @@ export default function Header() {
 
           {/* Mobile Menu Button */}
           <button
-            className="md:hidden p-2 text-white"
+            className="md:hidden p-2"
+            style={{ color: headerText }}
             onClick={() => setIsMenuOpen(!isMenuOpen)}
             aria-label="Toggle menu"
           >
@@ -76,7 +126,16 @@ export default function Header() {
                 <Link
                   key={link.href}
                   href={link.href}
-                  className="text-white hover:text-primary transition-colors font-medium py-1"
+                  className="transition-colors font-medium py-1"
+                  style={{ 
+                    color: headerText,
+                  }}
+                  onMouseEnter={(e) => {
+                    e.currentTarget.style.color = headerTextHover;
+                  }}
+                  onMouseLeave={(e) => {
+                    e.currentTarget.style.color = headerText;
+                  }}
                   onClick={() => setIsMenuOpen(false)}
                 >
                   {link.label}
