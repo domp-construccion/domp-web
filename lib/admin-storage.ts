@@ -186,14 +186,15 @@ export async function getSettings(): Promise<SiteSettings> {
     if (settings) {
       const { _id, ...settingsData } = settings;
       // Asegurar que los logos tengan valores por defecto si no existen o están vacíos
+      const defaultLogos = DEFAULT_SETTINGS.logos || {};
       if (!settingsData.logos || Object.keys(settingsData.logos).length === 0) {
-        settingsData.logos = DEFAULT_SETTINGS.logos;
+        settingsData.logos = defaultLogos;
       } else {
         // Asegurar que cada logo tenga un valor por defecto si falta
         settingsData.logos = {
-          principal: settingsData.logos.principal || DEFAULT_SETTINGS.logos.principal,
-          secundario: settingsData.logos.secundario || DEFAULT_SETTINGS.logos.secundario,
-          footer: settingsData.logos.footer || DEFAULT_SETTINGS.logos.footer,
+          principal: settingsData.logos.principal || defaultLogos.principal,
+          secundario: settingsData.logos.secundario || defaultLogos.secundario,
+          footer: settingsData.logos.footer || defaultLogos.footer,
         };
       }
       // Asegurar que los colores del header tengan valores por defecto si no existen
