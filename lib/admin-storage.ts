@@ -61,6 +61,10 @@ export type SiteSettings = {
     secundario?: string;
     footer?: string;
   };
+  politicas?: {
+    privacidad?: string;
+    terminos?: string;
+  };
 };
 
 const DEFAULT_SETTINGS: SiteSettings = {
@@ -166,6 +170,10 @@ const DEFAULT_SETTINGS: SiteSettings = {
     principal: "/images/logo-principal.png",
     secundario: "/images/logo-secundario.png",
     footer: "/images/logo-abajo.jpg",
+  },
+  politicas: {
+    privacidad: "",
+    terminos: "",
   },
 };
 

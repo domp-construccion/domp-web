@@ -169,14 +169,21 @@ export default async function Footer() {
 
         <div className="border-t border-gray-700 mt-8 pt-8 text-center text-gray-400">
           <p>&copy; {currentYear} DomP. Todos los derechos reservados.</p>
-          <p className="mt-2">
+          <div className="mt-2 flex flex-col md:flex-row items-center justify-center gap-4 text-sm">
+            <Link
+              href="/politicas"
+              className="text-gray-500 hover:text-gray-300 transition-colors"
+            >
+              Políticas de Privacidad
+            </Link>
+            <span className="hidden md:inline text-gray-600">|</span>
             <Link
               href="/admin/login"
-              className="text-gray-500 hover:text-gray-300 transition-colors text-sm"
+              className="text-gray-500 hover:text-gray-300 transition-colors"
             >
               Panel de Administración
             </Link>
-          </p>
+          </div>
         </div>
       </div>
     </footer>

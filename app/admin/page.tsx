@@ -107,6 +107,15 @@ export default function AdminPage() {
                 Ver y gestionar solicitudes de cotización
               </p>
             </Link>
+            <Link
+              href="/admin/politicas"
+              className="bg-indigo-600 text-white p-6 rounded-lg hover:bg-indigo-700 transition-colors"
+            >
+              <h2 className="text-xl font-semibold mb-2">Políticas y Privacidad</h2>
+              <p className="text-gray-200">
+                Editar políticas de privacidad y términos y condiciones
+              </p>
+            </Link>
           </div>
         </div>
       </div>
